@@ -5,40 +5,43 @@ import { Button } from "@/components/ui/button";
 import { BookingModal } from "@/components/BookingModal";
 
 const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/services", label: "Services" },
-  { to: "/visa-services", label: "Visa Services" },
-  { to: "/packages", label: "Packages" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/blog", label: "Blog" },
-  { to: "/contact", label: "Contact" },
-] as const;
+  { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#visa", label: "Visa Services" },
+  { href: "#packages", label: "Packages" },
+  { href: "#gallery", label: "Gallery" },
+  { href: "#blog", label: "Blog" },
+  { href: "#contact", label: "Contact" },
+];
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
-  const location = useLocation();
+
+  const scrollTo = (href: string) => {
+    setMobileOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm">
         <div className="mx-auto max-w-7xl flex items-center justify-between px-4 py-3">
-          <Link to="/" className="flex items-center gap-2">
+          <a href="#home" onClick={() => scrollTo("#home")} className="flex items-center gap-2">
             <img src="/logo.png" alt="Eco Trippers" className="h-10 md:h-12 w-auto" />
-          </Link>
+          </a>
 
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-secondary hover:text-primary ${
-                  location.pathname === link.to ? "text-primary bg-secondary" : "text-foreground/70"
-                }`}
+              <button
+                key={link.href}
+                onClick={() => scrollTo(link.href)}
+                className="px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-secondary hover:text-primary text-foreground/70"
               >
                 {link.label}
-              </Link>
+              </button>
             ))}
           </nav>
 
@@ -59,16 +62,13 @@ export function Header() {
         {mobileOpen && (
           <div className="lg:hidden border-t bg-background px-4 py-4 space-y-1 animate-fade-in">
             {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === link.to ? "text-primary bg-secondary" : "text-foreground/70 hover:bg-muted"
-                }`}
-                onClick={() => setMobileOpen(false)}
+              <button
+                key={link.href}
+                onClick={() => scrollTo(link.href)}
+                className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-foreground/70 hover:bg-muted"
               >
                 {link.label}
-              </Link>
+              </button>
             ))}
           </div>
         )}
