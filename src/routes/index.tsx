@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -131,6 +131,30 @@ const visaSteps = [
 
 /* ── Component ── */
 
+const heroSlides = [
+  {
+    image: "/hero-1.jpg",
+    badge: "🏝️ Tropical Paradise Awaits",
+    title1: "Escape to",
+    title2: "Paradise.",
+    subtitle: "Discover pristine beaches, luxury resorts, and unforgettable island getaways with Eco Trippers.",
+  },
+  {
+    image: "/hero-2.jpg",
+    badge: "🌸 Explore the Land of the Rising Sun",
+    title1: "Discover",
+    title2: "Japan & Beyond.",
+    subtitle: "Cherry blossoms, ancient temples, and breathtaking culture. Experience Asia's finest with expert-curated tours.",
+  },
+  {
+    image: "/hero-3.jpg",
+    badge: "🇬🇧 European Adventures Await",
+    title1: "Explore",
+    title2: "Europe in Style.",
+    subtitle: "From London's iconic landmarks to European capitals. Premium visa processing & luxury travel packages.",
+  },
+];
+
 function Index() {
   const site = useSiteData();
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -138,6 +162,16 @@ function Index() {
   const [galleryFilter, setGalleryFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
 
   const openBooking = (pkg?: string) => { setSelectedPkg(pkg || ""); setBookingOpen(true); };
 
@@ -161,24 +195,41 @@ function Index() {
     window.open(`https://wa.me/${ci.whatsapp}?text=${text}`, "_blank");
   };
 
+  const slide = heroSlides[currentSlide];
+
   return (
     <>
-      {/* ═══════ HERO ═══════ */}
+      {/* ═══════ HERO SLIDER ═══════ */}
       <section id="home" className="relative min-h-[90vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={site.hero.image_url} alt="Travel paradise" className="w-full h-full object-cover" width={1920} height={1080} />
-          <div className="absolute inset-0 bg-gradient-to-r from-eco-dark/80 via-eco-dark/50 to-transparent" />
-        </div>
-        <div className="relative z-10 mx-auto max-w-7xl px-4 py-20">
-          <div className="max-w-2xl" style={{ animation: "float-up 0.8s ease-out both" }}>
+        {/* Background images with crossfade */}
+        {heroSlides.map((s, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: i === currentSlide ? 1 : 0 }}
+          >
+            <img
+              src={s.image}
+              alt={s.title1 + " " + s.title2}
+              className="w-full h-full object-cover"
+              width={1920}
+              height={1080}
+              loading={i === 0 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-r from-eco-dark/85 via-eco-dark/60 to-eco-dark/20" />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 w-full">
+          <div className="max-w-2xl" key={currentSlide} style={{ animation: "float-up 0.7s ease-out both" }}>
             <span className="inline-block bg-primary/20 text-primary-foreground border border-primary/30 px-4 py-1.5 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
-              {site.hero.badge}
+              {slide.badge}
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-primary-foreground leading-tight">
-              {site.hero.title_line1}<br /><span className="text-gradient-eco">{site.hero.title_line2}</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-heading text-primary-foreground leading-tight">
+              {slide.title1}<br /><span className="text-gradient-eco">{slide.title2}</span>
             </h1>
-            <p className="mt-6 text-lg text-primary-foreground/80 max-w-xl leading-relaxed">
-              {site.hero.subtitle}
+            <p className="mt-6 text-lg text-primary-foreground/85 max-w-xl leading-relaxed">
+              {slide.subtitle}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button size="lg" onClick={() => openBooking()} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco text-base px-8 py-6 hover:opacity-90 transition-opacity">
@@ -188,6 +239,18 @@ function Index() {
                 Explore Packages <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
+          </div>
+
+          {/* Slide indicators */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                className={`h-2 rounded-full transition-all duration-500 ${i === currentSlide ? "w-10 bg-primary" : "w-2 bg-primary-foreground/40 hover:bg-primary-foreground/60"}`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </section>
