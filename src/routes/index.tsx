@@ -51,23 +51,40 @@ const fallbackServices = [
   { id: "6", title: "Umrah Packages", description: "Complete Umrah packages with guided support, premium accommodation near Haram, and hassle-free visa processing.", icon: "Compass", image_url: "/dest-umrah.jpg", features: ["Hotel near Haram", "Visa processing included", "Guided Ziyarah", "Group & family packages", "Year-round availability"], sort_order: 5 },
 ];
 
+const countryCodeMap: Record<string, string> = {
+  "Malaysia": "my", "Thailand": "th", "Japan": "jp", "South Korea": "kr",
+  "China": "cn", "Singapore": "sg", "Indonesia": "id", "Turkey": "tr",
+  "United Kingdom": "gb", "Canada": "ca", "USA": "us", "Germany": "de",
+  "Spain": "es", "Netherlands": "nl", "Hong Kong": "hk", "Nepal": "np",
+  "India": "in", "Australia": "au", "France": "fr", "Italy": "it",
+  "Maldives": "mv", "Vietnam": "vn", "Philippines": "ph", "UAE": "ae",
+  "Saudi Arabia": "sa", "Qatar": "qa", "Oman": "om", "Bahrain": "bh",
+  "Egypt": "eg", "Sri Lanka": "lk", "Myanmar": "mm", "Cambodia": "kh",
+  "Bhutan": "bt", "Switzerland": "ch", "Sweden": "se", "Norway": "no",
+};
+
+function getFlagUrl(name: string) {
+  const code = countryCodeMap[name] || name.toLowerCase().slice(0, 2);
+  return `https://flagcdn.com/w80/${code}.png`;
+}
+
 const fallbackVisaCountries = [
-  { name: "Malaysia", flag: "🇲🇾", price: "5,500", processing_time: "5-7 days" },
-  { name: "Thailand", flag: "🇹🇭", price: "6,500", processing_time: "5-7 days" },
-  { name: "Japan", flag: "🇯🇵", price: "9,500", processing_time: "7-10 days" },
-  { name: "South Korea", flag: "🇰🇷", price: "10,000", processing_time: "10-15 days" },
-  { name: "China", flag: "🇨🇳", price: "12,500", processing_time: "10-15 days" },
-  { name: "Singapore", flag: "🇸🇬", price: "5,500", processing_time: "3-5 days" },
-  { name: "Indonesia", flag: "🇮🇩", price: "4,500", processing_time: "3-5 days" },
-  { name: "Turkey", flag: "🇹🇷", price: "8,000", processing_time: "10-15 days" },
-  { name: "United Kingdom", flag: "🇬🇧", price: "18,000", processing_time: "15-21 days" },
-  { name: "Canada", flag: "🇨🇦", price: "20,000", processing_time: "20-30 days" },
-  { name: "USA", flag: "🇺🇸", price: "22,000", processing_time: "Interview based" },
-  { name: "Germany", flag: "🇩🇪", price: "15,000", processing_time: "15-21 days" },
-  { name: "Spain", flag: "🇪🇸", price: "14,000", processing_time: "15-21 days" },
-  { name: "Netherlands", flag: "🇳🇱", price: "15,000", processing_time: "15-21 days" },
-  { name: "Hong Kong", flag: "🇭🇰", price: "6,000", processing_time: "5-7 days" },
-  { name: "Nepal", flag: "🇳🇵", price: "3,500", processing_time: "3-5 days" },
+  { name: "Malaysia", flag: "MY", price: "5,500", processing_time: "5-7 days" },
+  { name: "Thailand", flag: "TH", price: "6,500", processing_time: "5-7 days" },
+  { name: "Japan", flag: "JP", price: "9,500", processing_time: "7-10 days" },
+  { name: "South Korea", flag: "KR", price: "10,000", processing_time: "10-15 days" },
+  { name: "China", flag: "CN", price: "12,500", processing_time: "10-15 days" },
+  { name: "Singapore", flag: "SG", price: "5,500", processing_time: "3-5 days" },
+  { name: "Indonesia", flag: "ID", price: "4,500", processing_time: "3-5 days" },
+  { name: "Turkey", flag: "TR", price: "8,000", processing_time: "10-15 days" },
+  { name: "United Kingdom", flag: "GB", price: "18,000", processing_time: "15-21 days" },
+  { name: "Canada", flag: "CA", price: "20,000", processing_time: "20-30 days" },
+  { name: "USA", flag: "US", price: "22,000", processing_time: "Interview based" },
+  { name: "Germany", flag: "DE", price: "15,000", processing_time: "15-21 days" },
+  { name: "Spain", flag: "ES", price: "14,000", processing_time: "15-21 days" },
+  { name: "Netherlands", flag: "NL", price: "15,000", processing_time: "15-21 days" },
+  { name: "Hong Kong", flag: "HK", price: "6,000", processing_time: "5-7 days" },
+  { name: "Nepal", flag: "NP", price: "3,500", processing_time: "3-5 days" },
   { name: "Sri Lanka", flag: "🇱🇰", price: "4,000", processing_time: "3-5 days" },
   { name: "Maldives", flag: "🇲🇻", price: "0", processing_time: "On arrival" },
   { name: "UAE", flag: "🇦🇪", price: "8,000", processing_time: "5-7 days" },
@@ -380,7 +397,7 @@ function Index() {
             {visaCountries.map((c: any) => (
               <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name} Visa`)}>
                 <CardContent className="p-5 flex items-center gap-4">
-                  <span className="text-3xl">{c.flag}</span>
+                  <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-sm">{c.name}</h3>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing_time}</div>
@@ -412,7 +429,7 @@ function Index() {
                   <CardContent className="p-6 lg:col-span-2">
                     <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                       <div>
-                        <h3 className="text-xl font-bold font-heading">{pkg.flag} {pkg.name}</h3>
+                        <h3 className="text-xl font-bold font-heading flex items-center gap-2"><img src={getFlagUrl(pkg.name)} alt={`${pkg.name} flag`} className="w-8 h-6 rounded object-cover shadow-sm" loading="lazy" /> {pkg.name}</h3>
                         <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{pkg.duration}</span>
                           <span className="flex items-center gap-1"><Users className="h-4 w-4" />{pkg.group_size}</span>
