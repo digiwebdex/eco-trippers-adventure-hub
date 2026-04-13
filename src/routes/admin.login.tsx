@@ -20,7 +20,7 @@ function AdminLogin() {
   const [submitting, setSubmitting] = useState(false);
 
   if (!loading && isAdmin) {
-    navigate({ to: "/admin" });
+    navigate({ to: "/admin" as any });
     return null;
   }
 
