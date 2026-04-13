@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useSiteData } from "@/hooks/useSiteData";
 import {
   Plane, Hotel, FileCheck, Map, Star, Compass,
   Shield, Clock, HeadphonesIcon, Award,
@@ -37,48 +38,88 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/* ── Data ── */
+/* ── Icon map for DB services ── */
+const iconMap: Record<string, any> = { FileCheck, Plane, Hotel, Map, Star, Compass };
 
-const serviceCards = [
-  { icon: FileCheck, title: "Visa Processing", desc: "Expert visa assistance for 21+ countries with complete documentation support.", color: "text-primary" },
-  { icon: Plane, title: "Air Tickets", desc: "Best deals on domestic and international flights with trusted airlines.", color: "text-primary" },
-  { icon: Hotel, title: "Hotel Booking", desc: "From budget stays to 5-star luxury hotels worldwide.", color: "text-primary" },
-  { icon: Map, title: "Tour Packages", desc: "Customized group and individual tour packages tailored to your needs.", color: "text-primary" },
-  { icon: Star, title: "Luxury Trips", desc: "Premium 5-star luxury travel experiences for the discerning traveler.", color: "text-eco-gold" },
-  { icon: Compass, title: "Umrah Packages", desc: "Complete Umrah packages with guided support and premium accommodation.", color: "text-primary" },
+/* ── Fallback data (used when DB is empty) ── */
+const fallbackServices = [
+  { id: "1", title: "Visa Processing", description: "Expert visa processing for 21+ countries. We handle complete documentation, application submission, and follow-up to ensure the highest approval rates.", icon: "FileCheck", image_url: "/dest-london.jpg", features: ["Tourist, Business & Student visas", "Complete file preparation", "Embassy appointment booking", "Document verification & guidance", "Fast-track processing available"], sort_order: 0 },
+  { id: "2", title: "Air Ticket Booking", description: "Best deals on domestic and international flights with all major airlines. We find the most convenient routes at competitive prices.", icon: "Plane", image_url: "/dest-japan.jpg", features: ["All major airlines", "Best fare guarantee", "Group booking discounts", "Flexible date search", "24/7 booking support"], sort_order: 1 },
+  { id: "3", title: "Hotel Reservations", description: "From budget accommodations to 5-star luxury resorts, we book the perfect stay for every traveler and every budget.", icon: "Hotel", image_url: "/dest-maldives.jpg", features: ["Budget to luxury options", "Best rate guarantee", "Free cancellation options", "Verified reviews", "Special honeymoon packages"], sort_order: 2 },
+  { id: "4", title: "Tour Packages", description: "Customized group and individual tour packages tailored to your preferences, budget, and travel style.", icon: "Map", image_url: "/dest-thailand.jpg", features: ["Group & individual tours", "Customizable itineraries", "Local guide included", "All-inclusive options", "Family-friendly packages"], sort_order: 3 },
+  { id: "5", title: "5-Star Luxury Trips", description: "Premium travel experiences featuring the finest hotels, exclusive transfers, and curated luxury itineraries.", icon: "Star", image_url: "/dest-malaysia.jpg", features: ["Premium accommodations", "Private transfers", "VIP experiences", "Personal concierge", "Fine dining included"], sort_order: 4 },
+  { id: "6", title: "Umrah Packages", description: "Complete Umrah packages with guided support, premium accommodation near Haram, and hassle-free visa processing.", icon: "Compass", image_url: "/dest-umrah.jpg", features: ["Hotel near Haram", "Visa processing included", "Guided Ziyarah", "Group & family packages", "Year-round availability"], sort_order: 5 },
 ];
 
-const serviceDetails = [
-  { icon: FileCheck, title: "Visa Processing", image: "/dest-london.jpg", desc: "Expert visa processing for 21+ countries. We handle complete documentation, application submission, and follow-up to ensure the highest approval rates.", features: ["Tourist, Business & Student visas", "Complete file preparation", "Embassy appointment booking", "Document verification & guidance", "Fast-track processing available"] },
-  { icon: Plane, title: "Air Ticket Booking", image: "/dest-japan.jpg", desc: "Best deals on domestic and international flights with all major airlines. We find the most convenient routes at competitive prices.", features: ["All major airlines", "Best fare guarantee", "Group booking discounts", "Flexible date search", "24/7 booking support"] },
-  { icon: Hotel, title: "Hotel Reservations", image: "/dest-maldives.jpg", desc: "From budget accommodations to 5-star luxury resorts, we book the perfect stay for every traveler and every budget.", features: ["Budget to luxury options", "Best rate guarantee", "Free cancellation options", "Verified reviews", "Special honeymoon packages"] },
-  { icon: Map, title: "Tour Packages", image: "/dest-thailand.jpg", desc: "Customized group and individual tour packages tailored to your preferences, budget, and travel style.", features: ["Group & individual tours", "Customizable itineraries", "Local guide included", "All-inclusive options", "Family-friendly packages"] },
-  { icon: Star, title: "5-Star Luxury Trips", image: "/dest-malaysia.jpg", desc: "Premium travel experiences featuring the finest hotels, exclusive transfers, and curated luxury itineraries.", features: ["Premium accommodations", "Private transfers", "VIP experiences", "Personal concierge", "Fine dining included"] },
-  { icon: Compass, title: "Umrah Packages", image: "/dest-umrah.jpg", desc: "Complete Umrah packages with guided support, premium accommodation near Haram, and hassle-free visa processing.", features: ["Hotel near Haram", "Visa processing included", "Guided Ziyarah", "Group & family packages", "Year-round availability"] },
+const fallbackVisaCountries = [
+  { name: "Malaysia", flag: "🇲🇾", price: "5,500", processing_time: "5-7 days" },
+  { name: "Thailand", flag: "🇹🇭", price: "6,500", processing_time: "5-7 days" },
+  { name: "Japan", flag: "🇯🇵", price: "9,500", processing_time: "7-10 days" },
+  { name: "South Korea", flag: "🇰🇷", price: "10,000", processing_time: "10-15 days" },
+  { name: "China", flag: "🇨🇳", price: "12,500", processing_time: "10-15 days" },
+  { name: "Singapore", flag: "🇸🇬", price: "5,500", processing_time: "3-5 days" },
+  { name: "Indonesia", flag: "🇮🇩", price: "4,500", processing_time: "3-5 days" },
+  { name: "Turkey", flag: "🇹🇷", price: "8,000", processing_time: "10-15 days" },
+  { name: "United Kingdom", flag: "🇬🇧", price: "18,000", processing_time: "15-21 days" },
+  { name: "Canada", flag: "🇨🇦", price: "20,000", processing_time: "20-30 days" },
+  { name: "USA", flag: "🇺🇸", price: "22,000", processing_time: "Interview based" },
+  { name: "Germany", flag: "🇩🇪", price: "15,000", processing_time: "15-21 days" },
+  { name: "Spain", flag: "🇪🇸", price: "14,000", processing_time: "15-21 days" },
+  { name: "Netherlands", flag: "🇳🇱", price: "15,000", processing_time: "15-21 days" },
+  { name: "Hong Kong", flag: "🇭🇰", price: "6,000", processing_time: "5-7 days" },
+  { name: "Nepal", flag: "🇳🇵", price: "3,500", processing_time: "3-5 days" },
+  { name: "Sri Lanka", flag: "🇱🇰", price: "4,000", processing_time: "3-5 days" },
+  { name: "Maldives", flag: "🇲🇻", price: "0", processing_time: "On arrival" },
+  { name: "UAE", flag: "🇦🇪", price: "8,000", processing_time: "5-7 days" },
+  { name: "Saudi Arabia", flag: "🇸🇦", price: "12,000", processing_time: "7-10 days" },
+  { name: "Australia", flag: "🇦🇺", price: "25,000", processing_time: "20-30 days" },
 ];
 
-const visaCountries = [
-  { name: "Malaysia", flag: "🇲🇾", price: "5,500", processing: "5-7 days" },
-  { name: "Thailand", flag: "🇹🇭", price: "6,500", processing: "5-7 days" },
-  { name: "Japan", flag: "🇯🇵", price: "9,500", processing: "7-10 days" },
-  { name: "South Korea", flag: "🇰🇷", price: "10,000", processing: "10-15 days" },
-  { name: "China", flag: "🇨🇳", price: "12,500", processing: "10-15 days" },
-  { name: "Singapore", flag: "🇸🇬", price: "5,500", processing: "3-5 days" },
-  { name: "Indonesia", flag: "🇮🇩", price: "4,500", processing: "3-5 days" },
-  { name: "Turkey", flag: "🇹🇷", price: "8,000", processing: "10-15 days" },
-  { name: "United Kingdom", flag: "🇬🇧", price: "18,000", processing: "15-21 days" },
-  { name: "Canada", flag: "🇨🇦", price: "20,000", processing: "20-30 days" },
-  { name: "USA", flag: "🇺🇸", price: "22,000", processing: "Interview based" },
-  { name: "Germany", flag: "🇩🇪", price: "15,000", processing: "15-21 days" },
-  { name: "Spain", flag: "🇪🇸", price: "14,000", processing: "15-21 days" },
-  { name: "Netherlands", flag: "🇳🇱", price: "15,000", processing: "15-21 days" },
-  { name: "Hong Kong", flag: "🇭🇰", price: "6,000", processing: "5-7 days" },
-  { name: "Nepal", flag: "🇳🇵", price: "3,500", processing: "3-5 days" },
-  { name: "Sri Lanka", flag: "🇱🇰", price: "4,000", processing: "3-5 days" },
-  { name: "Maldives", flag: "🇲🇻", price: "0", processing: "On arrival" },
-  { name: "UAE", flag: "🇦🇪", price: "8,000", processing: "5-7 days" },
-  { name: "Saudi Arabia", flag: "🇸🇦", price: "12,000", processing: "7-10 days" },
-  { name: "Australia", flag: "🇦🇺", price: "25,000", processing: "20-30 days" },
+const fallbackPackages = [
+  { id: "1", name: "Japan & South Korea Group Tour", flag: "🇯🇵🇰🇷", price: "209,900", duration: "7N/8D", image_url: "/dest-japan.jpg", type: "Featured", departure: "1 June 2026", deadline: "20 May 2026", group_size: "10-15 persons", includes: ["Return air ticket", "3-star hotel", "Airport pick & drop", "Sightseeing", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses", "Travel insurance"] },
+  { id: "2", name: "London, United Kingdom", flag: "🇬🇧", price: "220,000", duration: "6N/7D", image_url: "/dest-london.jpg", type: "Featured", departure: "Flexible", deadline: "2 weeks before", group_size: "Individual/Group", includes: ["Hotel stay", "Airport transfer", "City sightseeing", "Visa assistance", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses", "Attraction entry fees"] },
+  { id: "3", name: "Explore Malaysia", flag: "🇲🇾", price: "45,000", duration: "4N/5D", image_url: "/dest-malaysia.jpg", type: "Popular", departure: "Weekly", deadline: "1 week before", group_size: "2+ persons", includes: ["Hotel + Breakfast", "KL city tour", "Genting Highlands", "Airport transfer"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses"] },
+  { id: "4", name: "Amazing Thailand", flag: "🇹🇭", price: "38,000", duration: "3N/4D", image_url: "/dest-thailand.jpg", type: "Popular", departure: "Daily", deadline: "5 days before", group_size: "2+ persons", includes: ["Hotel stay", "Bangkok temple tour", "Pattaya day trip", "Airport transfer"], excludes: ["Visa fee", "Meals", "Shopping"] },
+  { id: "5", name: "Maldives Paradise", flag: "🇲🇻", price: "85,000", duration: "3N/4D", image_url: "/dest-maldives.jpg", type: "Luxury", departure: "Daily", deadline: "1 week before", group_size: "2+ persons", includes: ["Resort stay", "Speedboat transfer", "Water activities", "Full board meals"], excludes: ["International flights", "Spa treatments", "Excursions"] },
+  { id: "6", name: "Seoul, South Korea", flag: "🇰🇷", price: "150,000", duration: "5N/6D", image_url: "/dest-korea.jpg", type: "Popular", departure: "Bi-weekly", deadline: "2 weeks before", group_size: "4+ persons", includes: ["Hotel stay", "K-culture tour", "Gyeongbokgung Palace", "Shopping tour", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses"] },
+  { id: "7", name: "Umrah Package", flag: "🕋", price: "180,000", duration: "10N/11D", image_url: "/dest-umrah.jpg", type: "Special", departure: "Monthly", deadline: "3 weeks before", group_size: "Group", includes: ["Hotel near Haram", "Visa processing", "Guided Ziyarah", "Meals", "Air ticket"], excludes: ["Personal expenses", "Shopping", "Extra stays"] },
+];
+
+const fallbackGallery = [
+  { image_url: "/gallery-1.jpg", alt_text: "Travel success story", category: "Success" },
+  { image_url: "/gallery-2.jpg", alt_text: "Happy travelers", category: "Travelers" },
+  { image_url: "/gallery-3.jpg", alt_text: "Visa success", category: "Visa" },
+  { image_url: "/dest-japan.jpg", alt_text: "Japan destination", category: "Destinations" },
+  { image_url: "/dest-london.jpg", alt_text: "London destination", category: "Destinations" },
+  { image_url: "/dest-malaysia.jpg", alt_text: "Malaysia destination", category: "Destinations" },
+  { image_url: "/dest-thailand.jpg", alt_text: "Thailand destination", category: "Destinations" },
+  { image_url: "/dest-maldives.jpg", alt_text: "Maldives destination", category: "Destinations" },
+  { image_url: "/dest-korea.jpg", alt_text: "South Korea destination", category: "Destinations" },
+  { image_url: "/dest-umrah.jpg", alt_text: "Umrah pilgrimage", category: "Umrah" },
+  { image_url: "/hero-banner.jpg", alt_text: "Paradise island", category: "Destinations" },
+];
+
+const fallbackTestimonials = [
+  { name: "Rahman Ahmed", text: "Eco Trippers made our Japan trip absolutely seamless. From visa processing to hotel booking, everything was handled perfectly!", rating: 5 },
+  { name: "Fatima Khan", text: "Best visa consultancy in Dhaka! Got my UK visa approved on the first attempt thanks to their expert guidance.", rating: 5 },
+  { name: "Kamal Hossain", text: "Our family trip to Malaysia was unforgettable. Great packages at reasonable prices with excellent support.", rating: 5 },
+];
+
+const fallbackBlogPosts = [
+  { title: "Top 10 Visa-Free Countries for Bangladeshi Passport Holders", excerpt: "Discover amazing destinations you can visit without the hassle of visa processing.", image_url: "/dest-maldives.jpg", published_date: "2026-03-15", author: "Eco Trippers", category: "Visa Guide" },
+  { title: "Complete Guide to Japan Tourist Visa from Bangladesh", excerpt: "Everything you need to know about applying for a Japan tourist visa.", image_url: "/dest-japan.jpg", published_date: "2026-03-08", author: "Eco Trippers", category: "Visa Guide" },
+  { title: "Budget-Friendly Thailand Trip Planning", excerpt: "How to plan an amazing Thailand vacation without breaking the bank.", image_url: "/dest-thailand.jpg", published_date: "2026-02-28", author: "Eco Trippers", category: "Travel Tips" },
+  { title: "Malaysia: The Perfect First International Trip", excerpt: "Why Malaysia should be your first international destination.", image_url: "/dest-malaysia.jpg", published_date: "2026-02-20", author: "Eco Trippers", category: "Destination" },
+  { title: "5 Things to Know Before Your First Umrah", excerpt: "Essential tips for first-time Umrah pilgrims.", image_url: "/dest-umrah.jpg", published_date: "2026-02-12", author: "Eco Trippers", category: "Umrah" },
+  { title: "London on a Budget: A Bangladeshi Traveler's Guide", excerpt: "Explore London without spending a fortune.", image_url: "/dest-london.jpg", published_date: "2026-02-05", author: "Eco Trippers", category: "Travel Tips" },
+];
+
+const fallbackFaqs = [
+  { question: "How long does visa processing take?", answer: "Processing times vary by country. Typically 5-15 working days for most Asian countries, and 15-30 days for European/North American visas." },
+  { question: "What documents are needed for visa application?", answer: "Required documents vary by destination. Generally you'll need a valid passport, passport-sized photos, bank statements, employment letter, and hotel bookings." },
+  { question: "Can I customize tour packages?", answer: "Absolutely! All our packages can be customized based on your preferences, budget, and travel dates." },
+  { question: "Do you offer travel insurance?", answer: "Yes, we can arrange comprehensive travel insurance as part of your package." },
+  { question: "What payment methods do you accept?", answer: "We accept bank transfers, mobile banking (bKash, Nagad), and cash payments at our office." },
 ];
 
 const visaSteps = [
@@ -88,58 +129,10 @@ const visaSteps = [
   { icon: CheckCircle, title: "Approval", desc: "Visa approved and passport returned. You're ready to travel!" },
 ];
 
-const allPackages = [
-  { name: "Japan & South Korea Group Tour", flag: "🇯🇵🇰🇷", price: "209,900", duration: "7N/8D", image: "/dest-japan.jpg", type: "Featured", departure: "1 June 2026", deadline: "20 May 2026", groupSize: "10-15 persons", includes: ["Return air ticket", "3-star hotel", "Airport pick & drop", "Sightseeing", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses", "Travel insurance"] },
-  { name: "London, United Kingdom", flag: "🇬🇧", price: "220,000", duration: "6N/7D", image: "/dest-london.jpg", type: "Featured", departure: "Flexible", deadline: "2 weeks before", groupSize: "Individual/Group", includes: ["Hotel stay", "Airport transfer", "City sightseeing", "Visa assistance", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses", "Attraction entry fees"] },
-  { name: "Explore Malaysia", flag: "🇲🇾", price: "45,000", duration: "4N/5D", image: "/dest-malaysia.jpg", type: "Popular", departure: "Weekly", deadline: "1 week before", groupSize: "2+ persons", includes: ["Hotel + Breakfast", "KL city tour", "Genting Highlands", "Airport transfer"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses"] },
-  { name: "Amazing Thailand", flag: "🇹🇭", price: "38,000", duration: "3N/4D", image: "/dest-thailand.jpg", type: "Popular", departure: "Daily", deadline: "5 days before", groupSize: "2+ persons", includes: ["Hotel stay", "Bangkok temple tour", "Pattaya day trip", "Airport transfer"], excludes: ["Visa fee", "Meals", "Shopping"] },
-  { name: "Maldives Paradise", flag: "🇲🇻", price: "85,000", duration: "3N/4D", image: "/dest-maldives.jpg", type: "Luxury", departure: "Daily", deadline: "1 week before", groupSize: "2+ persons", includes: ["Resort stay", "Speedboat transfer", "Water activities", "Full board meals"], excludes: ["International flights", "Spa treatments", "Excursions"] },
-  { name: "Seoul, South Korea", flag: "🇰🇷", price: "150,000", duration: "5N/6D", image: "/dest-korea.jpg", type: "Popular", departure: "Bi-weekly", deadline: "2 weeks before", groupSize: "4+ persons", includes: ["Hotel stay", "K-culture tour", "Gyeongbokgung Palace", "Shopping tour", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses"] },
-  { name: "Umrah Package", flag: "🕋", price: "180,000", duration: "10N/11D", image: "/dest-umrah.jpg", type: "Special", departure: "Monthly", deadline: "3 weeks before", groupSize: "Group", includes: ["Hotel near Haram", "Visa processing", "Guided Ziyarah", "Meals", "Air ticket"], excludes: ["Personal expenses", "Shopping", "Extra stays"] },
-];
-
-const galleryImages = [
-  { src: "/gallery-1.jpg", alt: "Travel success story", category: "Success" },
-  { src: "/gallery-2.jpg", alt: "Happy travelers", category: "Travelers" },
-  { src: "/gallery-3.jpg", alt: "Visa success", category: "Visa" },
-  { src: "/dest-japan.jpg", alt: "Japan destination", category: "Destinations" },
-  { src: "/dest-london.jpg", alt: "London destination", category: "Destinations" },
-  { src: "/dest-malaysia.jpg", alt: "Malaysia destination", category: "Destinations" },
-  { src: "/dest-thailand.jpg", alt: "Thailand destination", category: "Destinations" },
-  { src: "/dest-maldives.jpg", alt: "Maldives destination", category: "Destinations" },
-  { src: "/dest-korea.jpg", alt: "South Korea destination", category: "Destinations" },
-  { src: "/dest-umrah.jpg", alt: "Umrah pilgrimage", category: "Umrah" },
-  { src: "/hero-banner.jpg", alt: "Paradise island", category: "Destinations" },
-];
-
-const galleryCategories = ["All", ...Array.from(new Set(galleryImages.map(i => i.category)))];
-
-const testimonials = [
-  { name: "Rahman Ahmed", text: "Eco Trippers made our Japan trip absolutely seamless. From visa processing to hotel booking, everything was handled perfectly!", rating: 5 },
-  { name: "Fatima Khan", text: "Best visa consultancy in Dhaka! Got my UK visa approved on the first attempt thanks to their expert guidance.", rating: 5 },
-  { name: "Kamal Hossain", text: "Our family trip to Malaysia was unforgettable. Great packages at reasonable prices with excellent support.", rating: 5 },
-];
-
-const blogPosts = [
-  { title: "Top 10 Visa-Free Countries for Bangladeshi Passport Holders", excerpt: "Discover amazing destinations you can visit without the hassle of visa processing. From the Maldives to Nepal, these countries welcome Bangladeshi travelers with open arms.", image: "/dest-maldives.jpg", date: "March 15, 2026", author: "Eco Trippers", category: "Visa Guide" },
-  { title: "Complete Guide to Japan Tourist Visa from Bangladesh", excerpt: "Everything you need to know about applying for a Japan tourist visa, including required documents, processing time, fees, and tips for a successful application.", image: "/dest-japan.jpg", date: "March 8, 2026", author: "Eco Trippers", category: "Visa Guide" },
-  { title: "Budget-Friendly Thailand Trip Planning", excerpt: "How to plan an amazing Thailand vacation without breaking the bank. From affordable hotels to street food and free attractions, here's your complete budget guide.", image: "/dest-thailand.jpg", date: "February 28, 2026", author: "Eco Trippers", category: "Travel Tips" },
-  { title: "Malaysia: The Perfect First International Trip", excerpt: "Why Malaysia should be your first international destination. Easy visa process, affordable prices, diverse culture, and stunning natural beauty.", image: "/dest-malaysia.jpg", date: "February 20, 2026", author: "Eco Trippers", category: "Destination" },
-  { title: "5 Things to Know Before Your First Umrah", excerpt: "Essential tips for first-time Umrah pilgrims. From packing essentials to rituals, here's everything you need to prepare for a meaningful spiritual journey.", image: "/dest-umrah.jpg", date: "February 12, 2026", author: "Eco Trippers", category: "Umrah" },
-  { title: "London on a Budget: A Bangladeshi Traveler's Guide", excerpt: "Explore London without spending a fortune. Free museums, affordable transport, and budget-friendly dining options for the smart Bangladeshi traveler.", image: "/dest-london.jpg", date: "February 5, 2026", author: "Eco Trippers", category: "Travel Tips" },
-];
-
-const faqs = [
-  { q: "How long does visa processing take?", a: "Processing times vary by country. Typically 5-15 working days for most Asian countries, and 15-30 days for European/North American visas. We provide estimated timelines during consultation." },
-  { q: "What documents are needed for visa application?", a: "Required documents vary by destination. Generally you'll need a valid passport, passport-sized photos, bank statements, employment letter, and hotel bookings. We provide a complete checklist for each country." },
-  { q: "Can I customize tour packages?", a: "Absolutely! All our packages can be customized based on your preferences, budget, and travel dates. Contact us to discuss your dream itinerary." },
-  { q: "Do you offer travel insurance?", a: "Yes, we can arrange comprehensive travel insurance as part of your package. It covers medical emergencies, trip cancellation, lost baggage, and more." },
-  { q: "What payment methods do you accept?", a: "We accept bank transfers, mobile banking (bKash, Nagad), and cash payments at our office. Installment options are available for premium packages." },
-];
-
 /* ── Component ── */
 
 function Index() {
+  const site = useSiteData();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("");
   const [galleryFilter, setGalleryFilter] = useState("All");
@@ -148,12 +141,24 @@ function Index() {
 
   const openBooking = (pkg?: string) => { setSelectedPkg(pkg || ""); setBookingOpen(true); };
 
-  const filteredGallery = galleryFilter === "All" ? galleryImages : galleryImages.filter(i => i.category === galleryFilter);
+  // Use DB data with fallbacks
+  const services = site.services.length ? site.services : fallbackServices;
+  const visaCountries = site.visaCountries.length ? site.visaCountries : fallbackVisaCountries;
+  const packages = site.packages.length ? site.packages : fallbackPackages;
+  const gallery = site.galleryImages.length ? site.galleryImages : fallbackGallery;
+  const testimonials = site.testimonials.length ? site.testimonials : fallbackTestimonials;
+  const blogPosts = site.blogPosts.length ? site.blogPosts : fallbackBlogPosts;
+  const faqs = site.faqs.length ? site.faqs : fallbackFaqs;
+
+  const galleryCategories = ["All", ...Array.from(new Set(gallery.map((i: any) => i.category)))];
+  const filteredGallery = galleryFilter === "All" ? gallery : gallery.filter((i: any) => i.category === galleryFilter);
+
+  const ci = site.contact_info;
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const text = `*Contact Inquiry - Eco Trippers*%0A%0A*Name:* ${encodeURIComponent(contactForm.name.trim())}%0A*Email:* ${encodeURIComponent(contactForm.email.trim())}%0A*Phone:* ${encodeURIComponent(contactForm.phone.trim())}%0A*Subject:* ${encodeURIComponent(contactForm.subject.trim())}%0A*Message:* ${encodeURIComponent(contactForm.message.trim())}`;
-    window.open(`https://wa.me/8801886345126?text=${text}`, "_blank");
+    window.open(`https://wa.me/${ci.whatsapp}?text=${text}`, "_blank");
   };
 
   return (
@@ -161,19 +166,19 @@ function Index() {
       {/* ═══════ HERO ═══════ */}
       <section id="home" className="relative min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/hero-banner.jpg" alt="Travel paradise" className="w-full h-full object-cover" width={1920} height={1080} />
+          <img src={site.hero.image_url} alt="Travel paradise" className="w-full h-full object-cover" width={1920} height={1080} />
           <div className="absolute inset-0 bg-gradient-to-r from-eco-dark/80 via-eco-dark/50 to-transparent" />
         </div>
         <div className="relative z-10 mx-auto max-w-7xl px-4 py-20">
           <div className="max-w-2xl" style={{ animation: "float-up 0.8s ease-out both" }}>
             <span className="inline-block bg-primary/20 text-primary-foreground border border-primary/30 px-4 py-1.5 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
-              ✈️ Your Trusted Travel Partner Since 2019
+              {site.hero.badge}
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-primary-foreground leading-tight">
-              Travel More.<br /><span className="text-gradient-eco">Stress Less.</span>
+              {site.hero.title_line1}<br /><span className="text-gradient-eco">{site.hero.title_line2}</span>
             </h1>
             <p className="mt-6 text-lg text-primary-foreground/80 max-w-xl leading-relaxed">
-              Visa, tours, flights and hotels in one place. Eco Trippers helps travelers with visa processing, air tickets, hotel bookings, and customized tour packages from Banani, Dhaka.
+              {site.hero.subtitle}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button size="lg" onClick={() => openBooking()} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco text-base px-8 py-6 hover:opacity-90 transition-opacity">
@@ -190,10 +195,10 @@ function Index() {
       {/* ═══════ STATS ═══════ */}
       <section className="py-16 bg-card border-y border-border/50">
         <div className="mx-auto max-w-5xl px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
-          <AnimatedCounter end={3500} suffix="+" label="Happy Customers" />
-          <AnimatedCounter end={110} suffix="+" label="Tour Success" />
-          <AnimatedCounter end={97.5} suffix="%" label="Positive Reviews" decimals={1} />
-          <AnimatedCounter end={564} suffix="+" label="Visa Success" />
+          <AnimatedCounter end={Number(site.stats.customers) || 3500} suffix="+" label="Happy Customers" />
+          <AnimatedCounter end={Number(site.stats.tours) || 110} suffix="+" label="Tour Success" />
+          <AnimatedCounter end={Number(site.stats.reviews) || 97.5} suffix="%" label="Positive Reviews" decimals={1} />
+          <AnimatedCounter end={Number(site.stats.visa) || 564} suffix="+" label="Visa Success" />
         </div>
       </section>
 
@@ -203,15 +208,9 @@ function Index() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <SectionHeading title="About Eco Trippers" centered={false} />
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Founded in 2019 by <strong>Monabbir Ahammed Khan</strong> and <strong>Bidarul Islam</strong>, Eco Trippers started with a simple mission: to make international travel accessible and stress-free for Bangladeshi travelers.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                What began as a small visa consultancy in Banani has grown into a full-service travel agency, helping thousands of travelers explore the world with confidence. We specialize in visa processing for 21+ countries, air ticketing, hotel bookings, and customized tour packages.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Today, with over 3,500 happy customers and a 97.5% positive review rate, we continue to be Dhaka's most trusted travel partner for leisure, business, group, and special-purpose travel.
-              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: site.about.paragraph1 }} />
+              <p className="text-muted-foreground leading-relaxed mb-4">{site.about.paragraph2}</p>
+              <p className="text-muted-foreground leading-relaxed">{site.about.paragraph3}</p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <img src="/gallery-1.jpg" alt="Eco Trippers team" loading="lazy" width={400} height={300} className="rounded-xl object-cover w-full h-48" />
@@ -231,14 +230,14 @@ function Index() {
               <CardContent className="p-8">
                 <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-4"><Target className="h-7 w-7" /></div>
                 <h3 className="font-heading text-xl font-bold mb-3">Our Mission</h3>
-                <p className="text-muted-foreground leading-relaxed">To provide reliable, stress-free travel solutions that empower every Bangladeshi traveler to explore the world confidently.</p>
+                <p className="text-muted-foreground leading-relaxed">{site.mission.mission}</p>
               </CardContent>
             </Card>
             <Card className="hover-lift border-border/50">
               <CardContent className="p-8">
                 <div className="w-14 h-14 rounded-full bg-eco-gold text-eco-gold-foreground flex items-center justify-center mb-4"><Eye className="h-7 w-7" /></div>
                 <h3 className="font-heading text-xl font-bold mb-3">Our Vision</h3>
-                <p className="text-muted-foreground leading-relaxed">To become Bangladesh's leading travel and visa consultancy, known for exceptional service, transparency, and commitment.</p>
+                <p className="text-muted-foreground leading-relaxed">{site.mission.vision}</p>
               </CardContent>
             </Card>
           </div>
@@ -272,28 +271,31 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Our Services" subtitle="Comprehensive travel solutions designed to make your journey seamless" />
           <div className="space-y-16">
-            {serviceDetails.map((svc, i) => (
-              <div key={svc.title} className={`grid grid-cols-1 lg:grid-cols-2 gap-10 items-center`}>
-                <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center"><svc.icon className="h-5 w-5" /></div>
-                    <h3 className="text-2xl font-bold font-heading">{svc.title}</h3>
+            {services.map((svc: any, i: number) => {
+              const IconComp = iconMap[svc.icon] || FileCheck;
+              return (
+                <div key={svc.id || svc.title} className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                  <div className={i % 2 === 1 ? "lg:order-2" : ""}>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center"><IconComp className="h-5 w-5" /></div>
+                      <h3 className="text-2xl font-bold font-heading">{svc.title}</h3>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mb-5">{svc.description}</p>
+                    <ul className="space-y-2.5 mb-6">
+                      {(svc.features || []).map((f: string) => (
+                        <li key={f} className="flex items-center gap-2.5 text-sm"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>{f}</span></li>
+                      ))}
+                    </ul>
+                    <Button onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })} className="bg-gradient-eco text-primary-foreground gap-2 shadow-eco hover:opacity-90">
+                      Get Started <ArrowRight className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed mb-5">{svc.desc}</p>
-                  <ul className="space-y-2.5 mb-6">
-                    {svc.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-sm"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>{f}</span></li>
-                    ))}
-                  </ul>
-                  <Button onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })} className="bg-gradient-eco text-primary-foreground gap-2 shadow-eco hover:opacity-90">
-                    Get Started <ArrowRight className="h-4 w-4" />
-                  </Button>
+                  <div className={i % 2 === 1 ? "lg:order-1" : ""}>
+                    <img src={svc.image_url || "/hero-banner.jpg"} alt={svc.title} loading="lazy" width={800} height={600} className="rounded-xl w-full h-80 object-cover shadow-lg" />
+                  </div>
                 </div>
-                <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                  <img src={svc.image} alt={svc.title} loading="lazy" width={800} height={600} className="rounded-xl w-full h-80 object-cover shadow-lg" />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -302,8 +304,6 @@ function Index() {
       <section id="visa" className="py-20 bg-background">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Visa Services" subtitle="Expert visa processing for 21+ countries with high approval rates" />
-
-          {/* Visa Process Steps */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {visaSteps.map((step, i) => (
               <div key={step.title} className="text-center relative">
@@ -313,16 +313,14 @@ function Index() {
               </div>
             ))}
           </div>
-
-          {/* Visa Countries Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {visaCountries.map((c) => (
-              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => { openBooking(`${c.name} Visa`); }}>
+            {visaCountries.map((c: any) => (
+              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name} Visa`)}>
                 <CardContent className="p-5 flex items-center gap-4">
                   <span className="text-3xl">{c.flag}</span>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-sm">{c.name}</h3>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing}</div>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing_time}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-muted-foreground">From</div>
@@ -341,11 +339,11 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Tour Packages" subtitle="Handpicked tour packages with the best value for your travel dreams" />
           <div className="space-y-8">
-            {allPackages.map((pkg) => (
-              <Card key={pkg.name} className="overflow-hidden hover-lift border-border/50">
+            {packages.map((pkg: any) => (
+              <Card key={pkg.id || pkg.name} className="overflow-hidden hover-lift border-border/50">
                 <div className="grid grid-cols-1 lg:grid-cols-3">
                   <div className="relative h-64 lg:h-auto">
-                    <img src={pkg.image} alt={pkg.name} loading="lazy" width={800} height={600} className="w-full h-full object-cover" />
+                    <img src={pkg.image_url || "/hero-banner.jpg"} alt={pkg.name} loading="lazy" width={800} height={600} className="w-full h-full object-cover" />
                     <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold">{pkg.type}</div>
                   </div>
                   <CardContent className="p-6 lg:col-span-2">
@@ -354,7 +352,7 @@ function Index() {
                         <h3 className="text-xl font-bold font-heading">{pkg.flag} {pkg.name}</h3>
                         <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{pkg.duration}</span>
-                          <span className="flex items-center gap-1"><Users className="h-4 w-4" />{pkg.groupSize}</span>
+                          <span className="flex items-center gap-1"><Users className="h-4 w-4" />{pkg.group_size}</span>
                           <span>Departure: {pkg.departure}</span>
                         </div>
                       </div>
@@ -367,11 +365,11 @@ function Index() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
                       <div>
                         <h4 className="text-sm font-semibold mb-2 text-primary">Includes</h4>
-                        <ul className="space-y-1">{pkg.includes.map((item) => (<li key={item} className="flex items-center gap-2 text-sm"><CheckCircle className="h-3.5 w-3.5 text-primary shrink-0" />{item}</li>))}</ul>
+                        <ul className="space-y-1">{(pkg.includes || []).map((item: string) => (<li key={item} className="flex items-center gap-2 text-sm"><CheckCircle className="h-3.5 w-3.5 text-primary shrink-0" />{item}</li>))}</ul>
                       </div>
                       <div>
                         <h4 className="text-sm font-semibold mb-2 text-destructive">Excludes</h4>
-                        <ul className="space-y-1">{pkg.excludes.map((item) => (<li key={item} className="flex items-center gap-2 text-sm text-muted-foreground"><XCircle className="h-3.5 w-3.5 text-destructive/50 shrink-0" />{item}</li>))}</ul>
+                        <ul className="space-y-1">{(pkg.excludes || []).map((item: string) => (<li key={item} className="flex items-center gap-2 text-sm text-muted-foreground"><XCircle className="h-3.5 w-3.5 text-destructive/50 shrink-0" />{item}</li>))}</ul>
                       </div>
                     </div>
                     {pkg.deadline && <p className="text-xs text-muted-foreground mb-4">Booking deadline: {pkg.deadline}</p>}
@@ -410,14 +408,14 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Travel Gallery" subtitle="Moments captured from our travelers' journeys around the world" />
           <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {galleryCategories.map((cat) => (
+            {galleryCategories.map((cat: string) => (
               <button key={cat} onClick={() => setGalleryFilter(cat)} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${galleryFilter === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent"}`}>{cat}</button>
             ))}
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredGallery.map((img, i) => (
-              <div key={i} className={`overflow-hidden rounded-xl cursor-pointer group ${i === 0 ? "md:col-span-2 md:row-span-2" : ""}`} onClick={() => setSelectedImage(img.src)}>
-                <img src={img.src} alt={img.alt} loading="lazy" width={800} height={600} className="w-full h-full min-h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+            {filteredGallery.map((img: any, i: number) => (
+              <div key={i} className={`overflow-hidden rounded-xl cursor-pointer group ${i === 0 ? "md:col-span-2 md:row-span-2" : ""}`} onClick={() => setSelectedImage(img.image_url)}>
+                <img src={img.image_url} alt={img.alt_text} loading="lazy" width={800} height={600} className="w-full h-full min-h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
             ))}
           </div>
@@ -429,7 +427,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="What Our Travelers Say" subtitle="Real stories from real travelers who trusted Eco Trippers" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
+            {testimonials.map((t: any) => (
               <Card key={t.name} className="hover-lift border-border/50">
                 <CardContent className="p-6">
                   <Quote className="h-8 w-8 text-primary/30 mb-3" />
@@ -450,15 +448,15 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Travel Blog" subtitle="Tips, guides, and inspiration for your next adventure" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.map((post) => (
+            {blogPosts.map((post: any) => (
               <Card key={post.title} className="overflow-hidden hover-lift border-border/50 group">
                 <div className="relative h-52 overflow-hidden">
-                  <img src={post.image} alt={post.title} loading="lazy" width={800} height={600} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={post.image_url} alt={post.title} loading="lazy" width={800} height={600} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <span className="absolute top-3 left-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">{post.category}</span>
                 </div>
                 <CardContent className="p-5">
                   <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{post.date}</span>
+                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{post.published_date}</span>
                     <span className="flex items-center gap-1"><User className="h-3 w-3" />{post.author}</span>
                   </div>
                   <h3 className="font-heading font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
@@ -475,10 +473,10 @@ function Index() {
         <div className="mx-auto max-w-3xl px-4">
           <SectionHeading title="Frequently Asked Questions" subtitle="Quick answers to common travel and visa questions" />
           <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, i) => (
+            {faqs.map((faq: any, i: number) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border rounded-xl px-5 bg-card">
-                <AccordionTrigger className="text-left font-medium hover:no-underline">{faq.q}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-sm leading-relaxed">{faq.a}</AccordionContent>
+                <AccordionTrigger className="text-left font-medium hover:no-underline">{faq.question}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm leading-relaxed">{faq.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -491,11 +489,11 @@ function Index() {
       {/* ═══════ CTA ═══════ */}
       <section className="py-20 bg-gradient-eco text-primary-foreground">
         <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">Ready to Start Your Journey?</h2>
-          <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">Let us handle the details while you enjoy the adventure. Book your consultation today and travel stress-free!</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">{site.cta.title}</h2>
+          <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">{site.cta.subtitle}</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button size="lg" onClick={() => openBooking()} className="bg-primary-foreground text-primary font-semibold text-base px-8 py-6 hover:bg-primary-foreground/90">Book a Consultation</Button>
-            <a href="https://wa.me/8801886345126" target="_blank" rel="noopener noreferrer">
+            <a href={`https://wa.me/${ci.whatsapp}`} target="_blank" rel="noopener noreferrer">
               <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 text-base px-8 py-6">Chat on WhatsApp</Button>
             </a>
           </div>
@@ -528,10 +526,10 @@ function Index() {
             <div className="space-y-6">
               <SectionHeading title="Get in Touch" centered={false} />
               {[
-                { icon: MapPin, title: "Office Address", text: "Suite #4-D, House #120, Road #1, Block #F, Banani, Dhaka-1213, Bangladesh" },
-                { icon: Phone, title: "Phone", text: "+880 1894-071070", href: "tel:+8801894071070" },
-                { icon: Mail, title: "Email", text: "ecotrippersbd@gmail.com", href: "mailto:ecotrippersbd@gmail.com" },
-                { icon: Clock, title: "Office Hours", text: "Sat - Thu: 10:00 AM - 7:00 PM" },
+                { icon: MapPin, title: "Office Address", text: ci.address },
+                { icon: Phone, title: "Phone", text: ci.phone, href: `tel:${ci.phone.replace(/[\s-]/g, "")}` },
+                { icon: Mail, title: "Email", text: ci.email, href: `mailto:${ci.email}` },
+                { icon: Clock, title: "Office Hours", text: ci.office_hours },
               ].map((item) => (
                 <Card key={item.title} className="border-border/50">
                   <CardContent className="p-4 flex items-start gap-3">
@@ -543,7 +541,7 @@ function Index() {
                   </CardContent>
                 </Card>
               ))}
-              <a href="https://wa.me/8801886345126" target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/${ci.whatsapp}`} target="_blank" rel="noopener noreferrer">
                 <Button className="w-full bg-[oklch(0.62_0.19_145)] hover:bg-[oklch(0.55_0.2_145)] text-primary-foreground gap-2 font-semibold"><MessageCircle className="h-5 w-5" /> Chat on WhatsApp</Button>
               </a>
             </div>
