@@ -400,7 +400,7 @@ function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {visaCountries.map((c: any) => (
-              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name} Visa`)}>
+              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name}`, "visa")}>
                 <CardContent className="p-5 flex items-center gap-4">
                   <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
                   <div className="flex-1 min-w-0">
