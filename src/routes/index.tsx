@@ -176,6 +176,7 @@ function Index() {
   const site = useSiteData();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("");
+  const [bookingMode, setBookingMode] = useState<"tour" | "visa">("tour");
   const [galleryFilter, setGalleryFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -190,7 +191,11 @@ function Index() {
     return () => clearInterval(timer);
   }, [nextSlide]);
 
-  const openBooking = (pkg?: string) => { setSelectedPkg(pkg || ""); setBookingOpen(true); };
+  const openBooking = (pkg?: string, mode: "tour" | "visa" = "tour") => {
+    setSelectedPkg(pkg || "");
+    setBookingMode(mode);
+    setBookingOpen(true);
+  };
 
   // Use DB data with fallbacks
   const services = site.services.length ? site.services : fallbackServices;
@@ -395,7 +400,7 @@ function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {visaCountries.map((c: any) => (
-              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name} Visa`)}>
+              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name}`, "visa")}>
                 <CardContent className="p-5 flex items-center gap-4">
                   <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
                   <div className="flex-1 min-w-0">
@@ -639,7 +644,7 @@ function Index() {
       </section>
 
       {/* Modals */}
-      <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} defaultPackage={selectedPkg} />
+      <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} defaultPackage={selectedPkg} mode={bookingMode} />
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none">
           {selectedImage && <img src={selectedImage} alt="Gallery fullscreen" className="w-full h-auto rounded-xl" />}
