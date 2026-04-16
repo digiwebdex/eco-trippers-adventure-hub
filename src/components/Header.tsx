@@ -5,13 +5,9 @@ import { Button } from "@/components/ui/button";
 import { BookingModal } from "@/components/BookingModal";
 
 const navLinks = [
-  { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#visa", label: "Visa Services" },
   { href: "#packages", label: "Packages" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#blog", label: "Blog" },
-  { href: "#contact", label: "Contact" },
 ];
 
 export function Header() {
