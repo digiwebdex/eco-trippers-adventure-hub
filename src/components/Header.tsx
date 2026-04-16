@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { BookingModal } from "@/components/BookingModal";
 
 const navLinks = [
-  { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#visa", label: "Visa Services" },
