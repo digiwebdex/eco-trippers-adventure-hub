@@ -76,6 +76,7 @@ function RootComponent() {
 
   return (
     <>
+      <OfferBar />
       <Header />
       <main><Outlet /></main>
       <Footer />
