@@ -176,6 +176,7 @@ function Index() {
   const site = useSiteData();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("");
+  const [bookingMode, setBookingMode] = useState<"tour" | "visa">("tour");
   const [galleryFilter, setGalleryFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -190,7 +191,11 @@ function Index() {
     return () => clearInterval(timer);
   }, [nextSlide]);
 
-  const openBooking = (pkg?: string) => { setSelectedPkg(pkg || ""); setBookingOpen(true); };
+  const openBooking = (pkg?: string, mode: "tour" | "visa" = "tour") => {
+    setSelectedPkg(pkg || "");
+    setBookingMode(mode);
+    setBookingOpen(true);
+  };
 
   // Use DB data with fallbacks
   const services = site.services.length ? site.services : fallbackServices;
