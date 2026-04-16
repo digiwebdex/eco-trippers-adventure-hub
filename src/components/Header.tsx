@@ -7,7 +7,7 @@ import { BookingModal } from "@/components/BookingModal";
 const navLinks = [
   { href: "#services", label: "Services" },
   { href: "#visa", label: "Visa Services" },
-  { href: "#packages", label: "Packages" },
+  { href: "#packages", label: "Tour Packages" },
 ];
 
 export function Header() {
