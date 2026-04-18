@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Globe, Package, Image, BookOpen, MessageSquare, HelpCircle, Settings, Navigation, PanelBottom, Inbox } from "lucide-react";
+import { FileText, Globe, Package, Image, BookOpen, MessageSquare, HelpCircle, Settings } from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
@@ -9,8 +9,6 @@ export const Route = createFileRoute("/admin/")({
 function AdminDashboard() {
   const cards = [
     { to: "/admin/content", icon: FileText, label: "Site Content", desc: "Edit hero, about, contact info" },
-    { to: "/admin/navigation", icon: Navigation, label: "Navigation", desc: "Manage header menu items" },
-    { to: "/admin/footer", icon: PanelBottom, label: "Footer", desc: "Edit footer columns & links" },
     { to: "/admin/services", icon: Settings, label: "Services", desc: "Manage travel services" },
     { to: "/admin/visa", icon: Globe, label: "Visa Countries", desc: "Manage visa destinations" },
     { to: "/admin/packages", icon: Package, label: "Packages", desc: "Manage tour packages" },
@@ -18,7 +16,6 @@ function AdminDashboard() {
     { to: "/admin/blog", icon: BookOpen, label: "Blog Posts", desc: "Manage blog articles" },
     { to: "/admin/testimonials", icon: MessageSquare, label: "Testimonials", desc: "Manage client reviews" },
     { to: "/admin/faqs", icon: HelpCircle, label: "FAQs", desc: "Manage FAQ items" },
-    { to: "/admin/contact", icon: Inbox, label: "Contact Inbox", desc: "View form submissions" },
   ] as const;
 
   return (

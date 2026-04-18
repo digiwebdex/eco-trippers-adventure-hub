@@ -59,42 +59,6 @@ export type Database = {
         }
         Relationships: []
       }
-      contact_submissions: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          is_read: boolean
-          message: string
-          name: string
-          phone: string | null
-          subject: string | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          is_read?: boolean
-          message: string
-          name: string
-          phone?: string | null
-          subject?: string | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          is_read?: boolean
-          message?: string
-          name?: string
-          phone?: string | null
-          subject?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       faqs: {
         Row: {
           answer: string
@@ -121,30 +85,6 @@ export type Database = {
           is_active?: boolean
           question?: string
           sort_order?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      footer_content: {
-        Row: {
-          content: Json
-          created_at: string
-          id: string
-          section_key: string
-          updated_at: string
-        }
-        Insert: {
-          content?: Json
-          created_at?: string
-          id?: string
-          section_key: string
-          updated_at?: string
-        }
-        Update: {
-          content?: Json
-          created_at?: string
-          id?: string
-          section_key?: string
           updated_at?: string
         }
         Relationships: []
@@ -179,39 +119,6 @@ export type Database = {
           is_active?: boolean
           sort_order?: number
           updated_at?: string
-        }
-        Relationships: []
-      }
-      navigation_items: {
-        Row: {
-          created_at: string
-          id: string
-          is_active: boolean
-          label: string
-          open_in_new_tab: boolean
-          sort_order: number
-          updated_at: string
-          url: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          label: string
-          open_in_new_tab?: boolean
-          sort_order?: number
-          updated_at?: string
-          url?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          label?: string
-          open_in_new_tab?: boolean
-          sort_order?: number
-          updated_at?: string
-          url?: string
         }
         Relationships: []
       }

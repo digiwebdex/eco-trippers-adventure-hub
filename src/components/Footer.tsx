@@ -1,69 +1,40 @@
-import { useEffect, useState } from "react";
 import { MapPin, Phone, Mail, Facebook, Instagram, Youtube } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useSiteData } from "@/hooks/useSiteData";
 
-interface FooterData {
-  tagline: string;
-  copyright: string;
-  tagline_right: string;
-  services_list: string[];
-  quick_links: { label: string; href: string }[];
-}
-
-const fallback: FooterData = {
-  tagline: "Your trusted travel partner since 2019. We specialize in visa processing, air tickets, hotel bookings, and customized tour packages from Bangladesh.",
-  copyright: "© Eco Trippers. All rights reserved.",
-  tagline_right: "Designed with ❤️ for travelers worldwide",
-  services_list: ["Visa Processing", "Air Ticket Booking", "Hotel Reservations", "Tour Packages", "5-Star Luxury Trips", "Umrah Packages"],
-  quick_links: [
-    { label: "Services", href: "#services" },
-    { label: "Tour Packages", href: "#packages" },
-    { label: "Visa Services", href: "#visa" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "Contact Us", href: "#contact" },
-  ],
-};
-
-const handleClick = (href: string) => {
-  if (href.startsWith("#")) {
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-  } else {
-    window.location.href = href;
-  }
+const scrollTo = (id: string) => {
+  const el = document.querySelector(id);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
 };
 
 export function Footer() {
-  const [data, setData] = useState<FooterData>(fallback);
-  const { contact_info } = useSiteData();
-
-  useEffect(() => {
-    supabase.from("footer_content").select("content").eq("section_key", "main").maybeSingle()
-      .then(({ data: row }) => { if (row?.content) setData({ ...fallback, ...(row.content as any) }); });
-  }, []);
-
-  const year = new Date().getFullYear();
-  const copyright = data.copyright.replace("©", `© ${year}`);
-
   return (
     <footer className="bg-eco-dark text-primary-foreground">
       <div className="mx-auto max-w-7xl px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
             <img src="/logo.png" alt="Eco Trippers" className="h-12 w-auto mb-4 brightness-200" />
-            <p className="text-primary-foreground/70 text-sm leading-relaxed">{data.tagline}</p>
+            <p className="text-primary-foreground/70 text-sm leading-relaxed">
+              Your trusted travel partner since 2019. We specialize in visa processing, air tickets, hotel bookings, and customized tour packages from Bangladesh.
+            </p>
             <div className="flex gap-3 mt-5">
-              {contact_info.facebook && <a href={contact_info.facebook} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors"><Facebook className="h-4 w-4" /></a>}
-              {contact_info.instagram && <a href={contact_info.instagram} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors"><Instagram className="h-4 w-4" /></a>}
-              {contact_info.youtube && <a href={contact_info.youtube} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors"><Youtube className="h-4 w-4" /></a>}
+              <a href="https://facebook.com/ecotrippers" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors"><Facebook className="h-4 w-4" /></a>
+              <a href="https://instagram.com/ecotrippers" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors"><Instagram className="h-4 w-4" /></a>
+              <a href="https://youtube.com/@ecotrippers" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors"><Youtube className="h-4 w-4" /></a>
             </div>
           </div>
 
           <div>
             <h3 className="font-heading text-lg font-semibold mb-4">Quick Links</h3>
             <nav className="space-y-2.5">
-              {data.quick_links.map((link, i) => (
-                <button key={i} onClick={() => handleClick(link.href)} className="block text-sm text-primary-foreground/70 hover:text-primary transition-colors">
+              {[
+                { href: "#about", label: "About Us" },
+                { href: "#services", label: "Our Services" },
+                { href: "#packages", label: "Tour Packages" },
+                { href: "#visa", label: "Visa Services" },
+                { href: "#gallery", label: "Gallery" },
+                { href: "#blog", label: "Travel Blog" },
+                { href: "#contact", label: "Contact Us" },
+              ].map((link) => (
+                <button key={link.href} onClick={() => scrollTo(link.href)} className="block text-sm text-primary-foreground/70 hover:text-primary transition-colors">
                   {link.label}
                 </button>
               ))}
@@ -73,7 +44,12 @@ export function Footer() {
           <div>
             <h3 className="font-heading text-lg font-semibold mb-4">Services</h3>
             <ul className="space-y-2.5 text-sm text-primary-foreground/70">
-              {data.services_list.map((s, i) => <li key={i}>{s}</li>)}
+              <li>Visa Processing</li>
+              <li>Air Ticket Booking</li>
+              <li>Hotel Reservations</li>
+              <li>Tour Packages</li>
+              <li>5-Star Luxury Trips</li>
+              <li>Umrah Packages</li>
             </ul>
           </div>
 
@@ -82,21 +58,21 @@ export function Footer() {
             <div className="space-y-3.5">
               <div className="flex items-start gap-3 text-sm text-primary-foreground/70">
                 <MapPin className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                <span>{contact_info.address}</span>
+                <span>Suite #4-D, House #120, Road #1, Block #F, Banani, Dhaka-1213, Bangladesh</span>
               </div>
-              <a href={`tel:${contact_info.phone}`} className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary transition-colors">
-                <Phone className="h-4 w-4 text-primary shrink-0" /><span>{contact_info.phone}</span>
+              <a href="tel:+8801894071070" className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary transition-colors">
+                <Phone className="h-4 w-4 text-primary shrink-0" /><span>+880 1894-071070</span>
               </a>
-              <a href={`mailto:${contact_info.email}`} className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary transition-colors">
-                <Mail className="h-4 w-4 text-primary shrink-0" /><span>{contact_info.email}</span>
+              <a href="mailto:ecotrippersbd@gmail.com" className="flex items-center gap-3 text-sm text-primary-foreground/70 hover:text-primary transition-colors">
+                <Mail className="h-4 w-4 text-primary shrink-0" /><span>ecotrippersbd@gmail.com</span>
               </a>
             </div>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/50">
-          <p>{copyright}</p>
-          <p>{data.tagline_right}</p>
+          <p>&copy; {new Date().getFullYear()} Eco Trippers. All rights reserved.</p>
+          <p>Designed with ❤️ for travelers worldwide</p>
         </div>
       </div>
     </footer>
