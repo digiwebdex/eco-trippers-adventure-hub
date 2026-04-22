@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,10 +19,13 @@ function AdminLogin() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!loading && isAdmin) {
-    navigate({ to: "/admin" as any });
-    return null;
-  }
+  useEffect(() => {
+    if (!loading && isAdmin) {
+      navigate({ to: "/admin", replace: true } as any);
+    }
+  }, [loading, isAdmin, navigate]);
+
+  if (!loading && isAdmin) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

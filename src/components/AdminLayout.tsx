@@ -6,7 +6,7 @@ import {
   Image, BookOpen, MessageSquare, HelpCircle, Phone,
   LogOut, Menu, X, Settings
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -33,6 +33,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  useEffect(() => {
+    if (!loading && (!user || !isAdmin)) {
+      navigate({ to: "/admin/login", replace: true } as any);
+    }
+  }, [loading, user, isAdmin, navigate]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-muted">
@@ -42,7 +48,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (!user || !isAdmin) {
-    navigate({ to: "/admin/login" });
     return null;
   }
 
