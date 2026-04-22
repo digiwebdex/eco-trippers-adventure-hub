@@ -321,11 +321,12 @@ function Index() {
                 </div>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link to="/about">
-                  <Button className="bg-gradient-eco text-primary-foreground font-semibold gap-2 shadow-eco hover:opacity-90">
-                    Learn More <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" })}
+                  className="bg-gradient-eco text-primary-foreground font-semibold gap-2 shadow-eco hover:opacity-90"
+                >
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </Button>
                 <Button
                   variant="outline"
                   onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
