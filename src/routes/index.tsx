@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useSiteData } from "@/hooks/useSiteData";
 import { getCountryCode } from "@/lib/countries";
+import { fallbackVisaCountries } from "@/lib/visaFallback";
 import {
   Plane, Hotel, FileCheck, Map, Star, Compass, Briefcase,
   Shield, Clock, HeadphonesIcon, Award,
@@ -68,30 +69,6 @@ function getFlagUrl(name: string) {
   const code = countryCodeMap[name] || name.toLowerCase().slice(0, 2);
   return `https://flagcdn.com/w80/${code}.png`;
 }
-
-const fallbackVisaCountries = [
-  { name: "Malaysia", flag: "MY", price: "5,500", processing_time: "5-7 days" },
-  { name: "Thailand", flag: "TH", price: "6,500", processing_time: "5-7 days" },
-  { name: "Japan", flag: "JP", price: "9,500", processing_time: "7-10 days" },
-  { name: "South Korea", flag: "KR", price: "10,000", processing_time: "10-15 days" },
-  { name: "China", flag: "CN", price: "12,500", processing_time: "10-15 days" },
-  { name: "Singapore", flag: "SG", price: "5,500", processing_time: "3-5 days" },
-  { name: "Indonesia", flag: "ID", price: "4,500", processing_time: "3-5 days" },
-  { name: "Turkey", flag: "TR", price: "8,000", processing_time: "10-15 days" },
-  { name: "United Kingdom", flag: "GB", price: "18,000", processing_time: "15-21 days" },
-  { name: "Canada", flag: "CA", price: "20,000", processing_time: "20-30 days" },
-  { name: "USA", flag: "US", price: "22,000", processing_time: "Interview based" },
-  { name: "Germany", flag: "DE", price: "15,000", processing_time: "15-21 days" },
-  { name: "Spain", flag: "ES", price: "14,000", processing_time: "15-21 days" },
-  { name: "Netherlands", flag: "NL", price: "15,000", processing_time: "15-21 days" },
-  { name: "Hong Kong", flag: "HK", price: "6,000", processing_time: "5-7 days" },
-  { name: "Nepal", flag: "NP", price: "3,500", processing_time: "3-5 days" },
-  { name: "Sri Lanka", flag: "🇱🇰", price: "4,000", processing_time: "3-5 days" },
-  { name: "Maldives", flag: "🇲🇻", price: "0", processing_time: "On arrival" },
-  { name: "UAE", flag: "🇦🇪", price: "8,000", processing_time: "5-7 days" },
-  { name: "Saudi Arabia", flag: "🇸🇦", price: "12,000", processing_time: "7-10 days" },
-  { name: "Australia", flag: "🇦🇺", price: "25,000", processing_time: "20-30 days" },
-];
 
 const fallbackPackages = [
   { id: "1", name: "Japan & South Korea Group Tour", flag: "🇯🇵🇰🇷", price: "209,900", duration: "7N/8D", image_url: "/dest-japan.jpg", type: "Featured", departure: "1 June 2026", deadline: "20 May 2026", group_size: "10-15 persons", includes: ["Return air ticket", "3-star hotel", "Airport pick & drop", "Sightseeing", "Breakfast"], excludes: ["Visa fee", "Lunch/dinner", "Personal expenses", "Travel insurance"] },

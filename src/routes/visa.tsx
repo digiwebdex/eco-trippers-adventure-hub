@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useSiteData } from "@/hooks/useSiteData";
 import { findCountryByCode, getFlagUrl } from "@/lib/countries";
 import { VisaApplyForm } from "@/components/VisaApplyForm";
+import { fallbackVisaCountries } from "@/lib/visaFallback";
 import {
   Clock, CheckCircle, FileText, Calendar, Globe, Shield,
   ArrowLeft, MapPin, Stamp, Wallet, AlertCircle,
@@ -54,7 +55,9 @@ function splitLines(value?: string): string[] {
 
 function VisaDetailPage() {
   const { country: code } = Route.useSearch();
-  const { visaCountries, loading } = useSiteData();
+  const { visaCountries: dbVisaCountries, loading } = useSiteData();
+  // Always have something to render even when DB is empty.
+  const visaCountries = dbVisaCountries.length ? dbVisaCountries : fallbackVisaCountries;
 
   const country = useMemo(
     () => findCountryByCode(visaCountries, code || ""),
