@@ -61,8 +61,9 @@
   --card-foreground: oklch(0.18 0.01 150);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.01 150);
-  --primary: oklch(0.71 0.17 152);
-  --primary-foreground: oklch(1 0 0);
+  /* Buttons / primary actions: #ffd51e yellow with dark text for contrast */
+  --primary: oklch(0.89 0.18 95);
+  --primary-foreground: oklch(0.18 0.01 150);
   --secondary: oklch(0.94 0.002 0);
   --secondary-foreground: oklch(0.22 0.02 152);
   --muted: oklch(0.94 0.002 0);
@@ -73,7 +74,7 @@
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.9 0.003 0);
   --input: oklch(0.9 0.003 0);
-  --ring: oklch(0.71 0.17 152);
+  --ring: oklch(0.89 0.18 95);
   --chart-1: oklch(0.71 0.17 152);
   --chart-2: oklch(0.88 0.18 95);
   --chart-3: oklch(0.6 0.15 152);
@@ -85,12 +86,12 @@
   --eco-light: oklch(0.94 0.002 0);
   --sidebar: oklch(0.94 0.002 0);
   --sidebar-foreground: oklch(0.18 0.01 150);
-  --sidebar-primary: oklch(0.71 0.17 152);
-  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.89 0.18 95);
+  --sidebar-primary-foreground: oklch(0.18 0.01 150);
   --sidebar-accent: oklch(0.88 0.18 95);
   --sidebar-accent-foreground: oklch(0.2 0.04 95);
   --sidebar-border: oklch(0.9 0.003 0);
-  --sidebar-ring: oklch(0.71 0.17 152);
+  --sidebar-ring: oklch(0.89 0.18 95);
 }
 
 .dark {
@@ -100,8 +101,8 @@
   --card-foreground: oklch(0.94 0.002 0);
   --popover: oklch(0.2 0.01 150);
   --popover-foreground: oklch(0.94 0.002 0);
-  --primary: oklch(0.71 0.17 152);
-  --primary-foreground: oklch(0.12 0.01 150);
+  --primary: oklch(0.89 0.18 95);
+  --primary-foreground: oklch(0.18 0.01 150);
   --secondary: oklch(0.24 0.01 150);
   --secondary-foreground: oklch(0.94 0.002 0);
   --muted: oklch(0.24 0.01 150);
@@ -112,7 +113,7 @@
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.71 0.17 152);
+  --ring: oklch(0.89 0.18 95);
   --eco-gold: oklch(0.88 0.18 95);
   --eco-gold-foreground: oklch(0.18 0.04 95);
   --eco-dark: oklch(0.16 0.01 150);
