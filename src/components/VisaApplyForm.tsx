@@ -35,7 +35,7 @@ export function VisaApplyForm({ countryName, defaultVisaType = "Tourist" }: Visa
       `*Email:* ${encodeURIComponent(form.email.trim())}%0A` +
       `*Intended Travel Date:* ${encodeURIComponent(form.travelDate)}%0A` +
       `*Notes:* ${encodeURIComponent(form.message.trim())}`;
-    window.open(`https://wa.me/8801886345126?text=${text}`, "_blank");
+    window.open(`https://wa.me/8801632164405?text=${text}`, "_blank");
   };
 
   return (

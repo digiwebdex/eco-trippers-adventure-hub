@@ -27,7 +27,7 @@ const defaultContactInfo = {
   address: "Suite #4-D, House #120, Road #1, Block #F, Banani, Dhaka-1213, Bangladesh",
   phone: "+880 1894-071070",
   email: "ecotrippersbd@gmail.com",
-  whatsapp: "8801886345126",
+  whatsapp: "8801632164405",
   office_hours: "Sat - Thu: 10:00 AM - 7:00 PM",
   facebook: "https://facebook.com/ecotrippers",
   instagram: "https://instagram.com/ecotrippers",
