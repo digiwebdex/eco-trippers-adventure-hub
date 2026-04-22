@@ -26,6 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import foundersImage from "@/assets/founders.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
