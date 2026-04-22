@@ -261,9 +261,6 @@ function VisaDetailPage() {
           </aside>
         </div>
       </main>
-
-      <Footer />
-      <WhatsAppButton />
     </div>
   );
 }
