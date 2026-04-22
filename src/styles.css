@@ -142,20 +142,21 @@
     background-clip: text;
   }
   .bg-gradient-eco {
-    background: linear-gradient(135deg, var(--color-primary), oklch(0.55 0.16 152));
+    /* Yellow brand gradient #ffd51e -> deeper amber */
+    background: linear-gradient(135deg, var(--color-primary), oklch(0.82 0.18 85));
   }
   .bg-gradient-gold {
     background: linear-gradient(135deg, var(--color-eco-gold), oklch(0.92 0.14 95));
   }
   .shadow-eco {
-    box-shadow: 0 10px 40px -10px oklch(0.71 0.17 152 / 0.3);
+    box-shadow: 0 10px 40px -10px oklch(0.89 0.18 95 / 0.45);
   }
   .hover-lift {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px -10px oklch(0.71 0.17 152 / 0.35);
+    box-shadow: 0 12px 40px -10px oklch(0.89 0.18 95 / 0.4);
   }
 }
 
