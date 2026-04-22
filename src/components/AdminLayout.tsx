@@ -29,15 +29,15 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   // Skip auth check for login page
   const isLoginPage = location.pathname === "/admin/login";
 
+  useEffect(() => {
+    if (!isLoginPage && !loading && (!user || !isAdmin)) {
+      navigate({ to: "/admin/login", replace: true } as any);
+    }
+  }, [isLoginPage, loading, user, isAdmin, navigate]);
+
   if (isLoginPage) {
     return <>{children}</>;
   }
-
-  useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
-      navigate({ to: "/admin/login", replace: true } as any);
-    }
-  }, [loading, user, isAdmin, navigate]);
 
   if (loading) {
     return (
