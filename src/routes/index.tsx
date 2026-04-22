@@ -278,6 +278,66 @@ function Index() {
         </div>
       </section>
 
+      {/* ═══════ ABOUT US (after hero) ═══════ */}
+      <section id="about-us" className="py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-eco opacity-20 blur-2xl rounded-3xl" aria-hidden />
+              <img
+                src={foundersImage}
+                alt="Monabbir Ahammed Khan and Bidarul Islam — Co-founders of Eco Trippers"
+                loading="lazy"
+                width={1200}
+                height={800}
+                className="relative rounded-2xl shadow-eco w-full h-auto object-cover"
+              />
+            </div>
+            <div>
+              <span className="inline-block bg-primary/15 text-primary border border-primary/30 px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase mb-4">
+                About Us
+              </span>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                Two Travelers. <span className="text-gradient-eco">One Mission.</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Eco Trippers was founded by <strong className="text-foreground">Monabbir Ahammed Khan</strong> and <strong className="text-foreground">Bidarul Islam</strong> — two lifelong travelers from Bangladesh who believe every journey should be effortless, memorable, and within reach. From visa paperwork to airport boarding, we handle the details so you can focus on the experience.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Since 2019, we've helped <strong className="text-foreground">3,500+ travelers</strong> explore <strong className="text-foreground">21+ countries</strong> with hand-crafted tour packages, stress-free visa processing, and the best deals on flights and hotels. Headquartered in Banani, Dhaka, our team blends local expertise with global partnerships to give every customer a world-class travel experience.
+              </p>
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="text-center p-4 rounded-xl bg-muted/50 border border-border/50">
+                  <div className="text-2xl font-bold text-primary font-heading">3,500+</div>
+                  <div className="text-xs text-muted-foreground mt-1">Happy Travelers</div>
+                </div>
+                <div className="text-center p-4 rounded-xl bg-muted/50 border border-border/50">
+                  <div className="text-2xl font-bold text-primary font-heading">21+</div>
+                  <div className="text-xs text-muted-foreground mt-1">Countries Served</div>
+                </div>
+                <div className="text-center p-4 rounded-xl bg-muted/50 border border-border/50">
+                  <div className="text-2xl font-bold text-primary font-heading">7+</div>
+                  <div className="text-xs text-muted-foreground mt-1">Years of Trust</div>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link to="/about">
+                  <Button className="bg-gradient-eco text-primary-foreground font-semibold gap-2 shadow-eco hover:opacity-90">
+                    Learn More <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline"
+                  onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
+                >
+                  Get in Touch
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══════ STATS ═══════ */}
       <section className="py-16 bg-card border-y border-border/50">
         <div className="mx-auto max-w-5xl px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
