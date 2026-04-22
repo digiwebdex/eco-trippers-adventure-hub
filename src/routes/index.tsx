@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useSiteData } from "@/hooks/useSiteData";
+import { getCountryCode } from "@/lib/countries";
 import {
   Plane, Hotel, FileCheck, Map, Star, Compass,
   Shield, Clock, HeadphonesIcon, Award,
@@ -400,19 +401,26 @@ function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {visaCountries.map((c: any) => (
-              <Card key={c.name} className="hover-lift border-border/50 group cursor-pointer" onClick={() => openBooking(`${c.name}`, "visa")}>
-                <CardContent className="p-5 flex items-center gap-4">
-                  <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm">{c.name}</h3>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing_time}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-muted-foreground">From</div>
-                    <div className="font-bold text-primary font-heading">{c.price === "0" ? "Free" : `৳${c.price}`}</div>
-                  </div>
-                </CardContent>
-              </Card>
+              <Link
+                key={c.name}
+                to="/visa"
+                search={{ country: ((c.country_code as string) || getCountryCode(c.name)).toUpperCase() }}
+                className="block"
+              >
+                <Card className="hover-lift border-border/50 group cursor-pointer h-full">
+                  <CardContent className="p-5 flex items-center gap-4">
+                    <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm">{c.name}</h3>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing_time}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-muted-foreground">From</div>
+                      <div className="font-bold text-primary font-heading">{c.price === "0" ? "Free" : `৳${c.price}`}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
           <p className="text-center text-xs text-muted-foreground mt-6">* Prices are starting fees and may vary. Contact us for exact pricing.</p>
