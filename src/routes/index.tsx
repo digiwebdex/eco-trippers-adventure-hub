@@ -40,16 +40,15 @@ export const Route = createFileRoute("/")({
 });
 
 /* ── Icon map for DB services ── */
-const iconMap: Record<string, any> = { FileCheck, Plane, Hotel, Map, Star, Compass };
+const iconMap: Record<string, any> = { FileCheck, Plane, Hotel, Map, Star, Compass, Briefcase };
 
 /* ── Fallback data (used when DB is empty) ── */
 const fallbackServices = [
   { id: "1", title: "Visa Processing", description: "Expert visa processing for 21+ countries. We handle complete documentation, application submission, and follow-up to ensure the highest approval rates.", icon: "FileCheck", image_url: "/dest-london.jpg", features: ["Tourist, Business & Student visas", "Complete file preparation", "Embassy appointment booking", "Document verification & guidance", "Fast-track processing available"], sort_order: 0 },
-  { id: "2", title: "Air Ticket Booking", description: "Best deals on domestic and international flights with all major airlines. We find the most convenient routes at competitive prices.", icon: "Plane", image_url: "/dest-japan.jpg", features: ["All major airlines", "Best fare guarantee", "Group booking discounts", "Flexible date search", "24/7 booking support"], sort_order: 1 },
-  { id: "3", title: "Hotel Reservations", description: "From budget accommodations to 5-star luxury resorts, we book the perfect stay for every traveler and every budget.", icon: "Hotel", image_url: "/dest-maldives.jpg", features: ["Budget to luxury options", "Best rate guarantee", "Free cancellation options", "Verified reviews", "Special honeymoon packages"], sort_order: 2 },
-  { id: "4", title: "Tour Packages", description: "Customized group and individual tour packages tailored to your preferences, budget, and travel style.", icon: "Map", image_url: "/dest-thailand.jpg", features: ["Group & individual tours", "Customizable itineraries", "Local guide included", "All-inclusive options", "Family-friendly packages"], sort_order: 3 },
-  { id: "5", title: "5-Star Luxury Trips", description: "Premium travel experiences featuring the finest hotels, exclusive transfers, and curated luxury itineraries.", icon: "Star", image_url: "/dest-malaysia.jpg", features: ["Premium accommodations", "Private transfers", "VIP experiences", "Personal concierge", "Fine dining included"], sort_order: 4 },
-  { id: "6", title: "Umrah Packages", description: "Complete Umrah packages with guided support, premium accommodation near Haram, and hassle-free visa processing.", icon: "Compass", image_url: "/dest-umrah.jpg", features: ["Hotel near Haram", "Visa processing included", "Guided Ziyarah", "Group & family packages", "Year-round availability"], sort_order: 5 },
+  { id: "2", title: "Air Ticket", description: "Best deals on domestic and international flights with all major airlines. We find the most convenient routes at competitive prices.", icon: "Plane", image_url: "/dest-japan.jpg", features: ["All major airlines", "Best fare guarantee", "Group booking discounts", "Flexible date search", "24/7 booking support"], sort_order: 1 },
+  { id: "3", title: "Package Tour", description: "Customized group and individual tour packages tailored to your preferences, budget, and travel style.", icon: "Map", image_url: "/dest-thailand.jpg", features: ["Group & individual tours", "Customizable itineraries", "Local guide included", "All-inclusive options", "Family-friendly packages"], sort_order: 2 },
+  { id: "4", title: "Hotel Booking", description: "From budget accommodations to 5-star luxury resorts, we book the perfect stay for every traveler and every budget.", icon: "Hotel", image_url: "/dest-maldives.jpg", features: ["Budget to luxury options", "Best rate guarantee", "Free cancellation options", "Verified reviews", "Special honeymoon packages"], sort_order: 3 },
+  { id: "5", title: "Corporate Event", description: "End-to-end planning and execution of corporate retreats, conferences, MICE trips and team-building events at home and abroad.", icon: "Briefcase", image_url: "/dest-malaysia.jpg", features: ["Conferences & retreats", "Team-building activities", "Group flight & hotel bookings", "Custom itinerary planning", "On-site coordination"], sort_order: 4 },
 ];
 
 const countryCodeMap: Record<string, string> = {
