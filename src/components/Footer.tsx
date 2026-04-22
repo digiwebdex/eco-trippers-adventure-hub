@@ -72,7 +72,17 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/50">
           <p>&copy; {new Date().getFullYear()} Eco Trippers. All rights reserved.</p>
-          <p>Designed with ❤️ for travelers worldwide</p>
+          <p>
+            Design &amp; Development by{" "}
+            <a
+              href="https://digiwebdex.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              DigiWebDex
+            </a>
+          </p>
         </div>
       </div>
     </footer>
