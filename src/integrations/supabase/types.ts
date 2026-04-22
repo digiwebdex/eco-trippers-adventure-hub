@@ -388,37 +388,64 @@ export type Database = {
       }
       visa_countries: {
         Row: {
+          country_code: string | null
           created_at: string
+          description: string | null
+          documents: string | null
+          entry_type: string | null
           flag: string
+          hero_image: string | null
           id: string
           is_active: boolean
           name: string
           price: string
           processing_time: string
+          requirements: string | null
           sort_order: number
+          stay_duration: string | null
           updated_at: string
+          validity: string | null
+          visa_type: string | null
         }
         Insert: {
+          country_code?: string | null
           created_at?: string
+          description?: string | null
+          documents?: string | null
+          entry_type?: string | null
           flag?: string
+          hero_image?: string | null
           id?: string
           is_active?: boolean
           name: string
           price?: string
           processing_time?: string
+          requirements?: string | null
           sort_order?: number
+          stay_duration?: string | null
           updated_at?: string
+          validity?: string | null
+          visa_type?: string | null
         }
         Update: {
+          country_code?: string | null
           created_at?: string
+          description?: string | null
+          documents?: string | null
+          entry_type?: string | null
           flag?: string
+          hero_image?: string | null
           id?: string
           is_active?: boolean
           name?: string
           price?: string
           processing_time?: string
+          requirements?: string | null
           sort_order?: number
+          stay_duration?: string | null
           updated_at?: string
+          validity?: string | null
+          visa_type?: string | null
         }
         Relationships: []
       }
