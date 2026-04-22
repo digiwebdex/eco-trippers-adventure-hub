@@ -329,28 +329,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Founders */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHeading title="Meet Our Founders" subtitle="The passionate leaders behind Eco Trippers" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {[
-              { name: "Monabbir Ahammed Khan", role: "Co-Founder & CEO", desc: "With a deep passion for travel and years of experience in the tourism industry, Monabbir leads Eco Trippers' vision of making travel accessible to all." },
-              { name: "Bidarul Islam", role: "Co-Founder & COO", desc: "Bidarul brings operational excellence and customer-first thinking to ensure every traveler receives world-class service and support." },
-            ].map((m) => (
-              <Card key={m.name} className="hover-lift border-border/50 text-center">
-                <CardContent className="p-8">
-                  <div className="w-20 h-20 mx-auto rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold font-heading mb-4">{m.name.split(" ").map(n => n[0]).join("")}</div>
-                  <h3 className="font-heading text-lg font-bold">{m.name}</h3>
-                  <p className="text-sm text-primary font-medium mb-3">{m.role}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ═══════ SERVICES ═══════ */}
       <section id="services" className="py-20 bg-eco-light">
         <div className="mx-auto max-w-7xl px-4">
