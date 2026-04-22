@@ -141,27 +141,28 @@
 
 @layer utilities {
   .text-gradient-eco {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-eco-gold));
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .bg-gradient-eco {
-    /* Yellow brand gradient #ffd51e -> deeper amber */
-    background: linear-gradient(135deg, var(--color-primary), oklch(0.82 0.18 85));
+    /* Ocean -> deeper ocean gradient */
+    background: linear-gradient(135deg, var(--color-primary), oklch(0.22 0.04 240));
   }
   .bg-gradient-gold {
-    background: linear-gradient(135deg, var(--color-eco-gold), oklch(0.92 0.14 95));
+    /* Coral gradient (token name kept for backward compatibility) */
+    background: linear-gradient(135deg, var(--color-accent), oklch(0.62 0.2 25));
   }
   .shadow-eco {
-    box-shadow: 0 10px 40px -10px oklch(0.89 0.18 95 / 0.45);
+    box-shadow: 0 10px 40px -10px oklch(0.48 0.09 220 / 0.35);
   }
   .hover-lift {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px -10px oklch(0.89 0.18 95 / 0.4);
+    box-shadow: 0 12px 40px -10px oklch(0.48 0.09 220 / 0.35);
   }
 }
 
