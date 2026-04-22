@@ -2,9 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useSiteData } from "@/hooks/useSiteData";
@@ -68,7 +65,6 @@ function VisaDetailPage() {
   if (!code || (!loading && !country)) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <main className="mx-auto max-w-7xl px-4 py-12">
           <div className="mb-8">
             <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
@@ -105,8 +101,6 @@ function VisaDetailPage() {
             ))}
           </div>
         </main>
-        <Footer />
-        <WhatsAppButton />
       </div>
     );
   }
@@ -114,9 +108,7 @@ function VisaDetailPage() {
   if (loading || !country) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
         <main className="mx-auto max-w-7xl px-4 py-20 text-center text-muted-foreground">Loading visa details…</main>
-        <Footer />
       </div>
     );
   }
@@ -145,8 +137,6 @@ function VisaDetailPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-
       {/* Hero strip */}
       <section className="relative bg-gradient-eco text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 py-10 md:py-14">
@@ -271,9 +261,6 @@ function VisaDetailPage() {
           </aside>
         </div>
       </main>
-
-      <Footer />
-      <WhatsAppButton />
     </div>
   );
 }
