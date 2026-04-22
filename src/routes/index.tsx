@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useSiteData } from "@/hooks/useSiteData";
 import { getCountryCode } from "@/lib/countries";
+import { fallbackVisaCountries } from "@/lib/visaFallback";
 import {
   Plane, Hotel, FileCheck, Map, Star, Compass, Briefcase,
   Shield, Clock, HeadphonesIcon, Award,
