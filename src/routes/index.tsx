@@ -13,7 +13,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useSiteData } from "@/hooks/useSiteData";
 import { getCountryCode } from "@/lib/countries";
 import {
-  Plane, Hotel, FileCheck, Map, Star, Compass,
+  Plane, Hotel, FileCheck, Map, Star, Compass, Briefcase,
   Shield, Clock, HeadphonesIcon, Award,
   ChevronRight, Quote, ArrowRight, CheckCircle,
   XCircle, Calendar, Users, Send, MessageCircle,
