@@ -6,7 +6,7 @@ import {
   Image, BookOpen, MessageSquare, HelpCircle, Phone,
   LogOut, Menu, X, Settings
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -29,6 +29,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   // Skip auth check for login page
   const isLoginPage = location.pathname === "/admin/login";
 
+  useEffect(() => {
+    if (!isLoginPage && !loading && (!user || !isAdmin)) {
+      navigate({ to: "/admin/login", replace: true } as any);
+    }
+  }, [isLoginPage, loading, user, isAdmin, navigate]);
+
   if (isLoginPage) {
     return <>{children}</>;
   }
@@ -42,7 +48,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (!user || !isAdmin) {
-    navigate({ to: "/admin/login" });
     return null;
   }
 
