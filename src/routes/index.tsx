@@ -542,7 +542,18 @@ function Index() {
                   <Quote className="h-8 w-8 text-primary/30 mb-3" />
                   <p className="text-muted-foreground text-sm leading-relaxed mb-4">{t.text}</p>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">{t.name[0]}</div>
+                    {t.image_url ? (
+                      <img
+                        src={t.image_url}
+                        alt={t.name}
+                        loading="lazy"
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 rounded-full object-cover shrink-0"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shrink-0">{t.name[0]}</div>
+                    )}
                     <div><div className="font-semibold text-sm">{t.name}</div><div className="text-xs text-eco-gold">{"★".repeat(t.rating)}</div></div>
                   </div>
                 </CardContent>
