@@ -9,6 +9,7 @@ export const Route = createFileRoute("/admin/testimonials")({
 
 const fields: FieldDef[] = [
   { name: "name", label: "Client Name", type: "text", required: true },
+  { name: "image_url", label: "Customer Photo", type: "image" },
   { name: "text", label: "Testimonial Text", type: "textarea" },
   { name: "rating", label: "Rating (1-5)", type: "number" },
   { name: "is_active", label: "Active", type: "switch" },
