@@ -85,6 +85,7 @@ export interface SiteData {
   blogPosts: any[];
   testimonials: any[];
   faqs: any[];
+  youtubeVideos: any[];
   loading: boolean;
 }
 
@@ -97,6 +98,7 @@ export function useSiteData(): SiteData {
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [faqs, setFaqs] = useState<any[]>([]);
+  const [youtubeVideos, setYoutubeVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -110,6 +112,7 @@ export function useSiteData(): SiteData {
         { data: blogRows },
         { data: testRows },
         { data: faqRows },
+        { data: vidRows },
       ] = await Promise.all([
         supabase.from("site_content").select("*"),
         supabase.from("services").select("*").eq("is_active", true).order("sort_order"),
@@ -119,6 +122,7 @@ export function useSiteData(): SiteData {
         supabase.from("blog_posts").select("*").eq("is_published", true).order("sort_order"),
         supabase.from("testimonials").select("*").eq("is_active", true).order("sort_order"),
         supabase.from("faqs").select("*").eq("is_active", true).order("sort_order"),
+        supabase.from("youtube_videos").select("*").eq("is_active", true).order("sort_order"),
       ]);
 
       const mapped: Record<string, any> = {};
@@ -131,6 +135,7 @@ export function useSiteData(): SiteData {
       if (blogRows?.length) setBlogPosts(blogRows);
       if (testRows?.length) setTestimonials(testRows);
       if (faqRows?.length) setFaqs(faqRows);
+      if (vidRows?.length) setYoutubeVideos(vidRows);
       setLoading(false);
     };
     fetchAll();
@@ -152,6 +157,7 @@ export function useSiteData(): SiteData {
     blogPosts,
     testimonials,
     faqs,
+    youtubeVideos,
     loading,
   };
 }
