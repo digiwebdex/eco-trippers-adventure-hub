@@ -324,44 +324,54 @@ function Index() {
         </div>
       </section>
 
-      {/* ═══════ ABOUT ═══════ */}
-      <section id="about" className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <SectionHeading title="About Eco Trippers" centered={false} />
-              <p className="text-muted-foreground leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: site.about.paragraph1 }} />
-              <p className="text-muted-foreground leading-relaxed mb-4">{site.about.paragraph2}</p>
-              <p className="text-muted-foreground leading-relaxed">{site.about.paragraph3}</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <img src="/gallery-1.jpg" alt="Eco Trippers team" loading="lazy" width={400} height={300} className="rounded-xl object-cover w-full h-48" />
-              <img src="/gallery-2.jpg" alt="Travel success" loading="lazy" width={400} height={300} className="rounded-xl object-cover w-full h-48 mt-8" />
-              <img src="/gallery-3.jpg" alt="Happy travelers" loading="lazy" width={400} height={300} className="rounded-xl object-cover w-full h-48" />
-              <img src="/dest-japan.jpg" alt="Destination" loading="lazy" width={400} height={300} className="rounded-xl object-cover w-full h-48 mt-8" />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ═══════ WHY ECO TRIPPERS ═══════ */}
+      <section id="why-eco" className="relative py-24 bg-background overflow-hidden">
+        {/* decorative gradient orbs */}
+        <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-eco-gold/10 blur-3xl" />
 
-      {/* Mission & Vision */}
-      <section className="py-20 bg-eco-light">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="hover-lift border-border/50">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-4"><Target className="h-7 w-7" /></div>
-                <h3 className="font-heading text-xl font-bold mb-3">Our Mission</h3>
-                <p className="text-muted-foreground leading-relaxed">{site.mission.mission}</p>
-              </CardContent>
-            </Card>
-            <Card className="hover-lift border-border/50">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 rounded-full bg-eco-gold text-eco-gold-foreground flex items-center justify-center mb-4"><Eye className="h-7 w-7" /></div>
-                <h3 className="font-heading text-xl font-bold mb-3">Our Vision</h3>
-                <p className="text-muted-foreground leading-relaxed">{site.mission.vision}</p>
-              </CardContent>
-            </Card>
+        <div className="relative mx-auto max-w-7xl px-4">
+          <div className="text-center mb-14">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-4">
+              The Eco Trippers Difference
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold font-heading text-foreground">
+              {site.why_eco.heading.split(" ").slice(0, -2).join(" ")}{" "}
+              <span className="text-gradient-eco">{site.why_eco.heading.split(" ").slice(-2).join(" ")}</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">{site.why_eco.subtitle}</p>
+            <div className="mt-5 mx-auto h-1 w-16 rounded-full bg-gradient-eco" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: Award,        title: site.why_eco.item1_title, desc: site.why_eco.item1_desc, tone: "primary" },
+              { icon: CheckCircle,  title: site.why_eco.item2_title, desc: site.why_eco.item2_desc, tone: "gold" },
+              { icon: Briefcase,    title: site.why_eco.item3_title, desc: site.why_eco.item3_desc, tone: "primary" },
+              { icon: HeadphonesIcon, title: site.why_eco.item4_title, desc: site.why_eco.item4_desc, tone: "gold" },
+              { icon: Shield,       title: site.why_eco.item5_title, desc: site.why_eco.item5_desc, tone: "primary" },
+              { icon: Globe,        title: site.why_eco.item6_title, desc: site.why_eco.item6_desc, tone: "gold" },
+            ].map((item, i) => {
+              const Icon = item.icon;
+              const isGold = item.tone === "gold";
+              return (
+                <Card
+                  key={i}
+                  className="group relative overflow-hidden border-border/50 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  {/* hover gradient wash */}
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${isGold ? "bg-gradient-to-br from-eco-gold/5 to-transparent" : "bg-gradient-to-br from-primary/5 to-transparent"}`} />
+                  <CardContent className="relative p-7">
+                    <div className={`mb-5 inline-flex items-center justify-center w-14 h-14 rounded-2xl ${isGold ? "bg-eco-gold text-eco-gold-foreground" : "bg-primary text-primary-foreground"} shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <h3 className="font-heading text-lg font-bold mb-2 text-foreground">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <div className={`mt-5 h-0.5 w-10 rounded-full transition-all duration-500 group-hover:w-20 ${isGold ? "bg-eco-gold" : "bg-primary"}`} />
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
