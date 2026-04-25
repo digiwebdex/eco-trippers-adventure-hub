@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminVisaRouteImport } from './routes/admin.visa'
+import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPackagesRouteImport } from './routes/admin.packages'
@@ -46,6 +47,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminVisaRoute = AdminVisaRouteImport.update({
   id: '/visa',
   path: '/visa',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVideosRoute = AdminVideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/admin/packages': typeof AdminPackagesRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/admin/visa': typeof AdminVisaRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/admin/packages': typeof AdminPackagesRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/admin/visa': typeof AdminVisaRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/admin/packages': typeof AdminPackagesRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/admin/visa': typeof AdminVisaRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/admin/packages'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/admin/videos'
     | '/admin/visa'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/admin/packages'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/admin/videos'
     | '/admin/visa'
     | '/admin'
   id:
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/admin/packages'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/admin/videos'
     | '/admin/visa'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -222,6 +234,13 @@ declare module '@tanstack/react-router' {
       path: '/visa'
       fullPath: '/admin/visa'
       preLoaderRoute: typeof AdminVisaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/videos': {
+      id: '/admin/videos'
+      path: '/videos'
+      fullPath: '/admin/videos'
+      preLoaderRoute: typeof AdminVideosRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/testimonials': {
@@ -292,6 +311,7 @@ interface AdminRouteChildren {
   AdminPackagesRoute: typeof AdminPackagesRoute
   AdminServicesRoute: typeof AdminServicesRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  AdminVideosRoute: typeof AdminVideosRoute
   AdminVisaRoute: typeof AdminVisaRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -305,6 +325,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPackagesRoute: AdminPackagesRoute,
   AdminServicesRoute: AdminServicesRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
+  AdminVideosRoute: AdminVideosRoute,
   AdminVisaRoute: AdminVisaRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
