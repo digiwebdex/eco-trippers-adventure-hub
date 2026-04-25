@@ -500,7 +500,107 @@ function Index() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-background">
+      {/* ═══════ AIR TICKETING ═══════ */}
+      <section id="air-ticketing" className="relative py-24 bg-background overflow-hidden">
+        {/* decorative cloud / sky gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,_color-mix(in_oklab,var(--primary)_8%,transparent),_transparent_60%)]" />
+        <div className="pointer-events-none absolute -bottom-32 -left-20 w-[28rem] h-[28rem] rounded-full bg-eco-gold/10 blur-3xl" />
+
+        <div className="relative mx-auto max-w-7xl px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Image side with floating ticket card */}
+            <div className="relative order-2 lg:order-1">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-border/40">
+                <img
+                  src={site.air_ticketing.image_url}
+                  alt="Air ticketing"
+                  loading="lazy"
+                  width={800}
+                  height={600}
+                  className="w-full h-[420px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/40 via-transparent to-transparent" />
+              </div>
+
+              {/* Floating boarding-pass card */}
+              <div className="hidden sm:block absolute -bottom-8 -right-4 lg:-right-8 w-72 rounded-2xl bg-card border border-border/60 shadow-xl p-5 backdrop-blur">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold tracking-widest text-primary uppercase">Boarding Pass</span>
+                  <Plane className="h-4 w-4 text-primary" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold font-heading text-foreground">DAC</div>
+                    <div className="text-[11px] text-muted-foreground">Dhaka</div>
+                  </div>
+                  <div className="flex-1 mx-3 relative">
+                    <div className="border-t border-dashed border-border" />
+                    <Plane className="h-4 w-4 text-eco-gold absolute left-1/2 -translate-x-1/2 -top-2 rotate-90" />
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold font-heading text-foreground">NRT</div>
+                    <div className="text-[11px] text-muted-foreground">Tokyo</div>
+                  </div>
+                </div>
+                <div className="mt-3 pt-3 border-t border-border/60 grid grid-cols-3 gap-2 text-[11px]">
+                  <div><div className="text-muted-foreground">Gate</div><div className="font-semibold text-foreground">A12</div></div>
+                  <div><div className="text-muted-foreground">Seat</div><div className="font-semibold text-foreground">14B</div></div>
+                  <div><div className="text-muted-foreground">Class</div><div className="font-semibold text-foreground">Eco+</div></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Content side */}
+            <div className="order-1 lg:order-2">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-4">
+                <Plane className="h-3.5 w-3.5" />
+                {site.air_ticketing.badge}
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold font-heading text-foreground leading-tight">
+                {site.air_ticketing.heading.split(".").map((part, i, arr) => (
+                  <span key={i}>
+                    {i === arr.length - 2 ? <span className="text-gradient-eco">{part}.</span> : part + (i < arr.length - 1 ? "." : "")}
+                  </span>
+                ))}
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl">
+                {site.air_ticketing.subtitle}
+              </p>
+
+              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[site.air_ticketing.feature1, site.air_ticketing.feature2, site.air_ticketing.feature3, site.air_ticketing.feature4]
+                  .filter(Boolean)
+                  .map((feat, i) => (
+                    <li key={i} className="flex items-start gap-2.5 group">
+                      <span className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        <CheckCircle className="h-3.5 w-3.5" />
+                      </span>
+                      <span className="text-sm text-foreground/90">{feat}</span>
+                    </li>
+                  ))}
+              </ul>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild size="lg" className="gap-2 shadow-lg">
+                  <a href={site.air_ticketing.cta_link}>
+                    <Plane className="h-4 w-4" />
+                    {site.air_ticketing.cta_text}
+                  </a>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="gap-2">
+                  <a href={`https://wa.me/${site.contact_info.whatsapp}?text=Hi%20Eco%20Trippers%2C%20I%20need%20help%20with%20air%20ticketing.`} target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="h-4 w-4" />
+                    WhatsApp Us
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-20 bg-eco-light">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Why Choose Eco Trippers?" subtitle="We make your travel planning smooth, reliable, and enjoyable" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

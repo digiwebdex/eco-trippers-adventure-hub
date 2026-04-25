@@ -50,6 +50,22 @@ const sections = [
     ],
   },
   {
+    key: "air_ticketing",
+    title: "Air Ticketing Section",
+    fields: [
+      { name: "badge", label: "Badge Text", type: "text" },
+      { name: "heading", label: "Heading", type: "text" },
+      { name: "subtitle", label: "Subtitle", type: "textarea" },
+      { name: "image_url", label: "Image URL", type: "text" },
+      { name: "feature1", label: "Feature 1", type: "text" },
+      { name: "feature2", label: "Feature 2", type: "text" },
+      { name: "feature3", label: "Feature 3", type: "text" },
+      { name: "feature4", label: "Feature 4", type: "text" },
+      { name: "cta_text", label: "Button Text", type: "text" },
+      { name: "cta_link", label: "Button Link (e.g. #contact)", type: "text" },
+    ],
+  },
+  {
     key: "stats",
     title: "Statistics",
     fields: [

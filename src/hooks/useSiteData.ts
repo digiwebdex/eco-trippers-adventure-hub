@@ -40,6 +40,19 @@ const defaultWhyEco = {
   item6_desc: "Based in Banani, Dhaka with partnerships across Asia, Europe, and the Middle East.",
 };
 
+const defaultAirTicketing = {
+  badge: "Air Ticketing",
+  heading: "Best Fares. Trusted Airlines.",
+  subtitle: "Domestic and international flight bookings with the best available fares from 50+ airlines. We handle reschedules, refunds, and group bookings end-to-end.",
+  image_url: "/dest-japan.jpg",
+  feature1: "Domestic & International tickets",
+  feature2: "Group & corporate bookings",
+  feature3: "24/7 reschedule & refund support",
+  feature4: "Best fare guarantee from 50+ airlines",
+  cta_text: "Book a Flight",
+  cta_link: "#contact",
+};
+
 const defaultContactInfo = {
   address: "Suite #4-D, House #120, Road #1, Block #F, Banani, Dhaka-1213, Bangladesh",
   phone: "+880 1894-071070",
@@ -62,6 +75,7 @@ export interface SiteData {
   about: typeof defaultAbout;
   mission: typeof defaultMission;
   why_eco: typeof defaultWhyEco;
+  air_ticketing: typeof defaultAirTicketing;
   contact_info: typeof defaultContactInfo;
   cta: typeof defaultCta;
   services: any[];
@@ -128,6 +142,7 @@ export function useSiteData(): SiteData {
     about: { ...defaultAbout, ...(content.about || {}) },
     mission: { ...defaultMission, ...(content.mission || {}) },
     why_eco: { ...defaultWhyEco, ...(content.why_eco || {}) },
+    air_ticketing: { ...defaultAirTicketing, ...(content.air_ticketing || {}) },
     contact_info: { ...defaultContactInfo, ...(content.contact_info || {}) },
     cta: { ...defaultCta, ...(content.cta || {}) },
     services,
