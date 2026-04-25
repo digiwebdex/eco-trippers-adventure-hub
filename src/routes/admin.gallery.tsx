@@ -10,7 +10,7 @@ export const Route = createFileRoute("/admin/gallery")({
 const fields: FieldDef[] = [
   { name: "image_url", label: "Image", type: "image", required: true },
   { name: "alt_text", label: "Alt Text", type: "text" },
-  { name: "category", label: "Category", type: "select", options: ["Success", "Travelers", "Visa", "Destinations", "Umrah", "General"] },
+  { name: "category", label: "Category", type: "select", options: ["Visa Success", "Visa Travelers"] },
   { name: "sort_order", label: "Sort Order", type: "number" },
   { name: "is_active", label: "Active", type: "switch" },
 ];
