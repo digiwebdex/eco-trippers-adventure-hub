@@ -704,19 +704,14 @@ function Index() {
             </a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { id: "rrGiK4XT54Y", title: "Process Your UK Visa From Eco Trippers" },
-              { id: "aA4CRbRyezA", title: "Japan & South Korea" },
-              { id: "dw7D5ZOsvOQ", title: "What Customer Says?" },
-              { id: "Et6krgu0mOQ", title: "Sreemangal Tour, Bangladesh" },
-            ].map((v) => (
+            {youtubeVideos.map((v: any) => (
               <div
-                key={v.id}
+                key={v.video_id}
                 className="group rounded-2xl overflow-hidden bg-card border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="relative aspect-video w-full overflow-hidden bg-black">
                   <iframe
-                    src={`https://www.youtube.com/embed/${v.id}?rel=0`}
+                    src={`https://www.youtube.com/embed/${v.video_id}?rel=0`}
                     title={v.title}
                     loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
