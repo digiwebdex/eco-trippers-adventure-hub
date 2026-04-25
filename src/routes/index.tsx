@@ -657,7 +657,7 @@ function Index() {
       </section>
 
       {/* YouTube Channel Videos */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-eco-light">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             title="Watch Our Latest Videos"
