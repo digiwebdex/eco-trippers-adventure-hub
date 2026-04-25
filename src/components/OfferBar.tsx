@@ -1,6 +1,8 @@
 import { Megaphone, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-const offers = [
+const fallbackOffers = [
   "🎉 Early Bird Discount: Save up to 15% on Umrah Packages — Book Before April 30!",
   "✈️ Special Thailand Tour: Starting from ৳45,000 — Limited Seats Available",
   "🕌 Hajj 2026 Registration Open — Reserve Your Spot Today",
@@ -10,6 +12,19 @@ const offers = [
 ];
 
 export function OfferBar() {
+  const [offers, setOffers] = useState<string[]>(fallbackOffers);
+
+  useEffect(() => {
+    supabase
+      .from("offers")
+      .select("message")
+      .eq("is_active", true)
+      .order("sort_order")
+      .then(({ data }) => {
+        if (data && data.length) setOffers(data.map((r: any) => r.message));
+      });
+  }, []);
+
   // Duplicate the list so the marquee loops seamlessly
   const items = [...offers, ...offers];
 
