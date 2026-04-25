@@ -562,6 +562,77 @@ function Index() {
         </div>
       </section>
 
+      {/* YouTube Channel Videos */}
+      <section className="py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionHeading
+            title="Watch Our Latest Videos"
+            subtitle="Travel tips, visa updates and customer stories from our YouTube channel"
+          />
+          <div className="flex justify-center mb-10">
+            <a
+              href="https://www.youtube.com/@ecotrippersbd2678"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-3 rounded-full border border-border/60 bg-card px-5 py-2.5 shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-white">
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
+                </svg>
+              </span>
+              <span className="flex flex-col text-left">
+                <span className="text-xs uppercase tracking-wider text-muted-foreground">YouTube Channel</span>
+                <span className="font-semibold text-foreground group-hover:text-primary transition-colors">@ecotrippersbd</span>
+              </span>
+            </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { id: "rrGiK4XT54Y", title: "Process Your UK Visa From Eco Trippers" },
+              { id: "aA4CRbRyezA", title: "Japan & South Korea" },
+              { id: "dw7D5ZOsvOQ", title: "What Customer Says?" },
+              { id: "Et6krgu0mOQ", title: "Sreemangal Tour, Bangladesh" },
+            ].map((v) => (
+              <div
+                key={v.id}
+                className="group rounded-2xl overflow-hidden bg-card border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="relative aspect-video w-full overflow-hidden bg-black">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${v.id}?rel=0`}
+                    title={v.title}
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-sm text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                    {v.title}
+                  </h3>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <a
+              href="https://www.youtube.com/@ecotrippersbd2678"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-eco px-6 py-3 text-sm font-semibold text-white shadow-eco hover:opacity-90 transition-opacity"
+            >
+              Visit Our YouTube Channel
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="py-20 bg-background">
         <div className="mx-auto max-w-7xl px-4">
