@@ -181,8 +181,9 @@ function Index() {
   const blogPosts = site.blogPosts.length ? site.blogPosts : fallbackBlogPosts;
   const faqs = site.faqs.length ? site.faqs : fallbackFaqs;
 
-  const galleryCategories = ["All", ...Array.from(new Set(gallery.map((i: any) => i.category)))];
-  const filteredGallery = galleryFilter === "All" ? gallery : gallery.filter((i: any) => i.category === galleryFilter);
+  const galleryCategories = ["All", "Visa Success", "Visa Travelers"];
+  const allowedGallery = gallery.filter((i: any) => galleryCategories.includes(i.category));
+  const filteredGallery = galleryFilter === "All" ? allowedGallery : allowedGallery.filter((i: any) => i.category === galleryFilter);
 
   const ci = site.contact_info;
 
