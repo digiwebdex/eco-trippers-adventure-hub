@@ -330,133 +330,6 @@ function Index() {
         </div>
       </section>
 
-      {/* ═══════ WHY ECO TRIPPERS ═══════ */}
-      <section id="why-eco" className="relative py-24 bg-background overflow-hidden">
-        {/* decorative gradient orbs */}
-        <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-eco-gold/10 blur-3xl" />
-
-        <div className="relative mx-auto max-w-7xl px-4">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-4">
-              The Eco Trippers Difference
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold font-heading text-foreground">
-              {site.why_eco.heading.split(" ").slice(0, -2).join(" ")}{" "}
-              <span className="text-gradient-eco">{site.why_eco.heading.split(" ").slice(-2).join(" ")}</span>
-            </h2>
-            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">{site.why_eco.subtitle}</p>
-            <div className="mt-5 mx-auto h-1 w-16 rounded-full bg-gradient-eco" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: Award,        title: site.why_eco.item1_title, desc: site.why_eco.item1_desc, tone: "primary" },
-              { icon: CheckCircle,  title: site.why_eco.item2_title, desc: site.why_eco.item2_desc, tone: "gold" },
-              { icon: Briefcase,    title: site.why_eco.item3_title, desc: site.why_eco.item3_desc, tone: "primary" },
-              { icon: HeadphonesIcon, title: site.why_eco.item4_title, desc: site.why_eco.item4_desc, tone: "gold" },
-              { icon: Shield,       title: site.why_eco.item5_title, desc: site.why_eco.item5_desc, tone: "primary" },
-              { icon: Globe,        title: site.why_eco.item6_title, desc: site.why_eco.item6_desc, tone: "gold" },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              const isGold = item.tone === "gold";
-              return (
-                <Card
-                  key={i}
-                  className="group relative overflow-hidden border-border/50 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl"
-                >
-                  {/* hover gradient wash */}
-                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${isGold ? "bg-gradient-to-br from-eco-gold/5 to-transparent" : "bg-gradient-to-br from-primary/5 to-transparent"}`} />
-                  <CardContent className="relative p-7">
-                    <div className={`mb-5 inline-flex items-center justify-center w-14 h-14 rounded-2xl ${isGold ? "bg-eco-gold text-eco-gold-foreground" : "bg-primary text-primary-foreground"} shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <h3 className="font-heading text-lg font-bold mb-2 text-foreground">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-                    <div className={`mt-5 h-0.5 w-10 rounded-full transition-all duration-500 group-hover:w-20 ${isGold ? "bg-eco-gold" : "bg-primary"}`} />
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════ SERVICES ═══════ */}
-      <section id="services" className="py-20 bg-eco-light">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHeading title="Our Services" subtitle="Comprehensive travel solutions designed to make your journey seamless" />
-          <div className="space-y-16">
-            {services.map((svc: any, i: number) => {
-              const IconComp = iconMap[svc.icon] || FileCheck;
-              return (
-                <div key={svc.id || svc.title} className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                  <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center"><IconComp className="h-5 w-5" /></div>
-                      <h3 className="text-2xl font-bold font-heading">{svc.title}</h3>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed mb-5">{svc.description}</p>
-                    <ul className="space-y-2.5 mb-6">
-                      {(svc.features || []).map((f: string) => (
-                        <li key={f} className="flex items-center gap-2.5 text-sm"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>{f}</span></li>
-                      ))}
-                    </ul>
-                    <Button onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })} className="bg-gradient-eco text-primary-foreground gap-2 shadow-eco hover:opacity-90">
-                      Get Started <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                    <img src={svc.image_url || "/hero-banner.jpg"} alt={svc.title} loading="lazy" width={800} height={600} className="rounded-xl w-full h-80 object-cover shadow-lg" />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════ VISA SERVICES ═══════ */}
-      <section id="visa" className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHeading title="Visa Services" subtitle="Expert visa processing for 21+ countries with high approval rates" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {visaSteps.map((step, i) => (
-              <div key={step.title} className="text-center relative">
-                <div className="w-14 h-14 mx-auto rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-3 text-xl font-bold">{i + 1}</div>
-                <h3 className="font-heading font-semibold mb-1">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {visaCountries.map((c: any) => (
-              <Link
-                key={c.name}
-                to="/visa"
-                search={{ country: ((c.country_code as string) || getCountryCode(c.name)).toUpperCase() }}
-                className="block"
-              >
-                <Card className="hover-lift border-border/50 group cursor-pointer h-full">
-                  <CardContent className="p-5 flex items-center gap-4">
-                    <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-sm">{c.name}</h3>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing_time}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-muted-foreground">From</div>
-                      <div className="font-bold text-primary font-heading">{c.price === "0" ? "Free" : `৳${c.price}`}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-          <p className="text-center text-xs text-muted-foreground mt-6">* Prices are starting fees and may vary. Contact us for exact pricing.</p>
-        </div>
-      </section>
-
       {/* ═══════ PACKAGES ═══════ */}
       <section id="packages" className="py-20 bg-eco-light">
         <div className="mx-auto max-w-7xl px-4">
@@ -505,7 +378,81 @@ function Index() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* ═══════ SERVICES ═══════ */}
+      <section id="services" className="py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionHeading title="Our Services" subtitle="Comprehensive travel solutions designed to make your journey seamless" />
+          <div className="space-y-16">
+            {services.map((svc: any, i: number) => {
+              const IconComp = iconMap[svc.icon] || FileCheck;
+              return (
+                <div key={svc.id || svc.title} className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                  <div className={i % 2 === 1 ? "lg:order-2" : ""}>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center"><IconComp className="h-5 w-5" /></div>
+                      <h3 className="text-2xl font-bold font-heading">{svc.title}</h3>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mb-5">{svc.description}</p>
+                    <ul className="space-y-2.5 mb-6">
+                      {(svc.features || []).map((f: string) => (
+                        <li key={f} className="flex items-center gap-2.5 text-sm"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>{f}</span></li>
+                      ))}
+                    </ul>
+                    <Button onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })} className="bg-gradient-eco text-primary-foreground gap-2 shadow-eco hover:opacity-90">
+                      Get Started <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className={i % 2 === 1 ? "lg:order-1" : ""}>
+                    <img src={svc.image_url || "/hero-banner.jpg"} alt={svc.title} loading="lazy" width={800} height={600} className="rounded-xl w-full h-80 object-cover shadow-lg" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ VISA SERVICES ═══════ */}
+      <section id="visa" className="py-20 bg-eco-light">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionHeading title="Visa Services" subtitle="Expert visa processing for 21+ countries with high approval rates" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {visaSteps.map((step, i) => (
+              <div key={step.title} className="text-center relative">
+                <div className="w-14 h-14 mx-auto rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-3 text-xl font-bold">{i + 1}</div>
+                <h3 className="font-heading font-semibold mb-1">{step.title}</h3>
+                <p className="text-sm text-muted-foreground">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {visaCountries.map((c: any) => (
+              <Link
+                key={c.name}
+                to="/visa"
+                search={{ country: ((c.country_code as string) || getCountryCode(c.name)).toUpperCase() }}
+                className="block"
+              >
+                <Card className="hover-lift border-border/50 group cursor-pointer h-full">
+                  <CardContent className="p-5 flex items-center gap-4">
+                    <img src={getFlagUrl(c.name)} alt={`${c.name} flag`} className="w-10 h-7 rounded object-cover shadow-sm" loading="lazy" />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm">{c.name}</h3>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" /> {c.processing_time}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-muted-foreground">From</div>
+                      <div className="font-bold text-primary font-heading">{c.price === "0" ? "Free" : `৳${c.price}`}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+          <p className="text-center text-xs text-muted-foreground mt-6">* Prices are starting fees and may vary. Contact us for exact pricing.</p>
+        </div>
+      </section>
+
       {/* ═══════ AIR TICKETING ═══════ */}
       <section id="air-ticketing" className="relative py-24 bg-background overflow-hidden">
         {/* decorative cloud / sky gradient */}
@@ -605,29 +552,60 @@ function Index() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-20 bg-eco-light">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHeading title="Why Choose Eco Trippers?" subtitle="We make your travel planning smooth, reliable, and enjoyable" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* ═══════ WHY ECO TRIPPERS ═══════ */}
+      <section id="why-eco" className="relative py-24 bg-eco-light overflow-hidden">
+        {/* decorative gradient orbs */}
+        <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-eco-gold/10 blur-3xl" />
+
+        <div className="relative mx-auto max-w-7xl px-4">
+          <div className="text-center mb-14">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-4">
+              The Eco Trippers Difference
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold font-heading text-foreground">
+              {site.why_eco.heading.split(" ").slice(0, -2).join(" ")}{" "}
+              <span className="text-gradient-eco">{site.why_eco.heading.split(" ").slice(-2).join(" ")}</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">{site.why_eco.subtitle}</p>
+            <div className="mt-5 mx-auto h-1 w-16 rounded-full bg-gradient-eco" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: Shield, title: "Trusted & Reliable", desc: "Established in 2019 with 3500+ happy travelers" },
-              { icon: Clock, title: "Fast Processing", desc: "Quick visa processing and instant ticket confirmations" },
-              { icon: HeadphonesIcon, title: "24/7 Support", desc: "Round-the-clock assistance via phone and WhatsApp" },
-              { icon: Award, title: "Best Prices", desc: "Competitive pricing with no hidden charges" },
-            ].map((item) => (
-              <div key={item.title} className="text-center p-6 rounded-xl bg-card border border-border/50 hover-lift">
-                <div className="w-14 h-14 mx-auto rounded-full bg-secondary flex items-center justify-center mb-4"><item.icon className="h-7 w-7 text-primary" /></div>
-                <h3 className="font-heading font-semibold mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
+              { icon: Award,        title: site.why_eco.item1_title, desc: site.why_eco.item1_desc, tone: "primary" },
+              { icon: CheckCircle,  title: site.why_eco.item2_title, desc: site.why_eco.item2_desc, tone: "gold" },
+              { icon: Briefcase,    title: site.why_eco.item3_title, desc: site.why_eco.item3_desc, tone: "primary" },
+              { icon: HeadphonesIcon, title: site.why_eco.item4_title, desc: site.why_eco.item4_desc, tone: "gold" },
+              { icon: Shield,       title: site.why_eco.item5_title, desc: site.why_eco.item5_desc, tone: "primary" },
+              { icon: Globe,        title: site.why_eco.item6_title, desc: site.why_eco.item6_desc, tone: "gold" },
+            ].map((item, i) => {
+              const Icon = item.icon;
+              const isGold = item.tone === "gold";
+              return (
+                <Card
+                  key={i}
+                  className="group relative overflow-hidden border-border/50 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  {/* hover gradient wash */}
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${isGold ? "bg-gradient-to-br from-eco-gold/5 to-transparent" : "bg-gradient-to-br from-primary/5 to-transparent"}`} />
+                  <CardContent className="relative p-7">
+                    <div className={`mb-5 inline-flex items-center justify-center w-14 h-14 rounded-2xl ${isGold ? "bg-eco-gold text-eco-gold-foreground" : "bg-primary text-primary-foreground"} shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <h3 className="font-heading text-lg font-bold mb-2 text-foreground">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <div className={`mt-5 h-0.5 w-10 rounded-full transition-all duration-500 group-hover:w-20 ${isGold ? "bg-eco-gold" : "bg-primary"}`} />
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ═══════ GALLERY ═══════ */}
-      <section id="gallery" className="py-20 bg-eco-light">
+      <section id="gallery" className="py-20 bg-background">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Travel Gallery" subtitle="Moments captured from our travelers' journeys around the world" />
           <div className="flex flex-wrap justify-center gap-3 mb-12">
