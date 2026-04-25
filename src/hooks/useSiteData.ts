@@ -23,6 +23,23 @@ const defaultMission = {
   vision: "To become Bangladesh's leading travel and visa consultancy, known for exceptional service, transparency, and commitment.",
 };
 
+const defaultWhyEco = {
+  heading: "Why Eco Trippers",
+  subtitle: "Six reasons thousands of Bangladeshi travelers trust us with their journeys.",
+  item1_title: "97.5% Visa Success Rate",
+  item1_desc: "Proven track record across 21+ countries with expert documentation and embassy follow-up.",
+  item2_title: "Transparent Pricing",
+  item2_desc: "No hidden fees, no surprises. Clear quotes upfront so you always know what you're paying for.",
+  item3_title: "End-to-End Support",
+  item3_desc: "From visa filing to airport boarding — we handle the details so you can focus on the trip.",
+  item4_title: "24/7 Travel Assistance",
+  item4_desc: "Real humans on WhatsApp and phone whenever you need help, even while you're abroad.",
+  item5_title: "Trusted Since 2019",
+  item5_desc: "3,500+ happy customers, 110+ tours completed, and a 97.5% positive review rate.",
+  item6_title: "Local Experts, Global Reach",
+  item6_desc: "Based in Banani, Dhaka with partnerships across Asia, Europe, and the Middle East.",
+};
+
 const defaultContactInfo = {
   address: "Suite #4-D, House #120, Road #1, Block #F, Banani, Dhaka-1213, Bangladesh",
   phone: "+880 1894-071070",
@@ -44,6 +61,7 @@ export interface SiteData {
   stats: typeof defaultStats;
   about: typeof defaultAbout;
   mission: typeof defaultMission;
+  why_eco: typeof defaultWhyEco;
   contact_info: typeof defaultContactInfo;
   cta: typeof defaultCta;
   services: any[];
@@ -109,6 +127,7 @@ export function useSiteData(): SiteData {
     stats: { ...defaultStats, ...(content.stats || {}) },
     about: { ...defaultAbout, ...(content.about || {}) },
     mission: { ...defaultMission, ...(content.mission || {}) },
+    why_eco: { ...defaultWhyEco, ...(content.why_eco || {}) },
     contact_info: { ...defaultContactInfo, ...(content.contact_info || {}) },
     cta: { ...defaultCta, ...(content.cta || {}) },
     services,
