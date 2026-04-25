@@ -81,17 +81,14 @@ const fallbackPackages = [
 ];
 
 const fallbackGallery = [
-  { image_url: "/gallery-1.jpg", alt_text: "Travel success story", category: "Success" },
-  { image_url: "/gallery-2.jpg", alt_text: "Happy travelers", category: "Travelers" },
-  { image_url: "/gallery-3.jpg", alt_text: "Visa success", category: "Visa" },
-  { image_url: "/dest-japan.jpg", alt_text: "Japan destination", category: "Destinations" },
-  { image_url: "/dest-london.jpg", alt_text: "London destination", category: "Destinations" },
-  { image_url: "/dest-malaysia.jpg", alt_text: "Malaysia destination", category: "Destinations" },
-  { image_url: "/dest-thailand.jpg", alt_text: "Thailand destination", category: "Destinations" },
-  { image_url: "/dest-maldives.jpg", alt_text: "Maldives destination", category: "Destinations" },
-  { image_url: "/dest-korea.jpg", alt_text: "South Korea destination", category: "Destinations" },
-  { image_url: "/dest-umrah.jpg", alt_text: "Umrah pilgrimage", category: "Umrah" },
-  { image_url: "/hero-banner.jpg", alt_text: "Paradise island", category: "Destinations" },
+  { image_url: "/gallery-3.jpg", alt_text: "Visa approval success", category: "Visa Success" },
+  { image_url: "/gallery-1.jpg", alt_text: "Approved visa documents", category: "Visa Success" },
+  { image_url: "/dest-japan.jpg", alt_text: "Japan visa approved", category: "Visa Success" },
+  { image_url: "/dest-korea.jpg", alt_text: "South Korea visa approved", category: "Visa Success" },
+  { image_url: "/gallery-2.jpg", alt_text: "Happy travelers exploring", category: "Visa Travelers" },
+  { image_url: "/dest-thailand.jpg", alt_text: "Travelers in Thailand", category: "Visa Travelers" },
+  { image_url: "/dest-maldives.jpg", alt_text: "Travelers in Maldives", category: "Visa Travelers" },
+  { image_url: "/dest-malaysia.jpg", alt_text: "Travelers in Malaysia", category: "Visa Travelers" },
 ];
 
 const fallbackTestimonials = [
