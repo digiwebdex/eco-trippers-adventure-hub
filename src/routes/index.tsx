@@ -81,17 +81,14 @@ const fallbackPackages = [
 ];
 
 const fallbackGallery = [
-  { image_url: "/gallery-1.jpg", alt_text: "Travel success story", category: "Success" },
-  { image_url: "/gallery-2.jpg", alt_text: "Happy travelers", category: "Travelers" },
-  { image_url: "/gallery-3.jpg", alt_text: "Visa success", category: "Visa" },
-  { image_url: "/dest-japan.jpg", alt_text: "Japan destination", category: "Destinations" },
-  { image_url: "/dest-london.jpg", alt_text: "London destination", category: "Destinations" },
-  { image_url: "/dest-malaysia.jpg", alt_text: "Malaysia destination", category: "Destinations" },
-  { image_url: "/dest-thailand.jpg", alt_text: "Thailand destination", category: "Destinations" },
-  { image_url: "/dest-maldives.jpg", alt_text: "Maldives destination", category: "Destinations" },
-  { image_url: "/dest-korea.jpg", alt_text: "South Korea destination", category: "Destinations" },
-  { image_url: "/dest-umrah.jpg", alt_text: "Umrah pilgrimage", category: "Umrah" },
-  { image_url: "/hero-banner.jpg", alt_text: "Paradise island", category: "Destinations" },
+  { image_url: "/gallery-3.jpg", alt_text: "Visa approval success", category: "Visa Success" },
+  { image_url: "/gallery-1.jpg", alt_text: "Approved visa documents", category: "Visa Success" },
+  { image_url: "/dest-japan.jpg", alt_text: "Japan visa approved", category: "Visa Success" },
+  { image_url: "/dest-korea.jpg", alt_text: "South Korea visa approved", category: "Visa Success" },
+  { image_url: "/gallery-2.jpg", alt_text: "Happy travelers exploring", category: "Visa Travelers" },
+  { image_url: "/dest-thailand.jpg", alt_text: "Travelers in Thailand", category: "Visa Travelers" },
+  { image_url: "/dest-maldives.jpg", alt_text: "Travelers in Maldives", category: "Visa Travelers" },
+  { image_url: "/dest-malaysia.jpg", alt_text: "Travelers in Malaysia", category: "Visa Travelers" },
 ];
 
 const fallbackTestimonials = [
@@ -184,8 +181,9 @@ function Index() {
   const blogPosts = site.blogPosts.length ? site.blogPosts : fallbackBlogPosts;
   const faqs = site.faqs.length ? site.faqs : fallbackFaqs;
 
-  const galleryCategories = ["All", ...Array.from(new Set(gallery.map((i: any) => i.category)))];
-  const filteredGallery = galleryFilter === "All" ? gallery : gallery.filter((i: any) => i.category === galleryFilter);
+  const galleryCategories = ["All", "Visa Success", "Visa Travelers"];
+  const allowedGallery = gallery.filter((i: any) => galleryCategories.includes(i.category));
+  const filteredGallery = galleryFilter === "All" ? allowedGallery : allowedGallery.filter((i: any) => i.category === galleryFilter);
 
   const ci = site.contact_info;
 
@@ -516,18 +514,51 @@ function Index() {
       <section id="gallery" className="py-20 bg-eco-light">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Travel Gallery" subtitle="Moments captured from our travelers' journeys around the world" />
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
             {galleryCategories.map((cat: string) => (
-              <button key={cat} onClick={() => setGalleryFilter(cat)} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${galleryFilter === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent"}`}>{cat}</button>
+              <button
+                key={cat}
+                onClick={() => setGalleryFilter(cat)}
+                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border ${
+                  galleryFilter === cat
+                    ? "bg-gradient-eco text-primary-foreground border-transparent shadow-lg scale-105"
+                    : "bg-background text-foreground border-border hover:border-primary hover:text-primary"
+                }`}
+              >
+                {cat}
+              </button>
             ))}
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
             {filteredGallery.map((img: any, i: number) => (
-              <div key={i} className={`overflow-hidden rounded-xl cursor-pointer group ${i === 0 ? "md:col-span-2 md:row-span-2" : ""}`} onClick={() => setSelectedImage(img.image_url)}>
-                <img src={img.image_url} alt={img.alt_text} loading="lazy" width={800} height={600} className="w-full h-full min-h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div
+                key={`${img.image_url}-${i}`}
+                className={`relative overflow-hidden rounded-2xl cursor-pointer group shadow-md hover:shadow-2xl transition-all duration-500 ${
+                  i === 0 ? "md:col-span-2 md:row-span-2" : ""
+                }`}
+                onClick={() => setSelectedImage(img.image_url)}
+              >
+                <img
+                  src={img.image_url}
+                  alt={img.alt_text}
+                  loading="lazy"
+                  width={800}
+                  height={600}
+                  className="w-full h-full min-h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <span className="inline-block bg-primary/90 backdrop-blur text-primary-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-2">
+                    {img.category}
+                  </span>
+                  <p className="text-white text-sm font-medium line-clamp-2">{img.alt_text}</p>
+                </div>
               </div>
             ))}
           </div>
+          {filteredGallery.length === 0 && (
+            <p className="text-center text-muted-foreground py-12">No images in this category yet.</p>
+          )}
         </div>
       </section>
 
