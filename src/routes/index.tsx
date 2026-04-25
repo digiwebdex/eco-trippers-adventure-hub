@@ -180,6 +180,12 @@ function Index() {
   const testimonials = site.testimonials.length ? site.testimonials : fallbackTestimonials;
   const blogPosts = site.blogPosts.length ? site.blogPosts : fallbackBlogPosts;
   const faqs = site.faqs.length ? site.faqs : fallbackFaqs;
+  const youtubeVideos = site.youtubeVideos.length ? site.youtubeVideos : [
+    { video_id: "rrGiK4XT54Y", title: "Process Your UK Visa From Eco Trippers" },
+    { video_id: "aA4CRbRyezA", title: "Japan & South Korea" },
+    { video_id: "dw7D5ZOsvOQ", title: "What Customer Says?" },
+    { video_id: "Et6krgu0mOQ", title: "Sreemangal Tour, Bangladesh" },
+  ];
 
   const galleryCategories = ["All", "Visa Success", "Visa Travelers"];
   const allowedGallery = gallery.filter((i: any) => galleryCategories.includes(i.category));
