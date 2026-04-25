@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, FileText, Plane, Globe, Package,
-  Image, BookOpen, MessageSquare, HelpCircle, Phone,
+  Image, BookOpen, MessageSquare, HelpCircle, Phone, Youtube,
   LogOut, Menu, X, Settings
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -15,6 +15,7 @@ const navItems = [
   { to: "/admin/visa", icon: Globe, label: "Visa Countries" },
   { to: "/admin/packages", icon: Package, label: "Packages" },
   { to: "/admin/gallery", icon: Image, label: "Gallery" },
+  { to: "/admin/videos", icon: Youtube, label: "YouTube Videos" },
   { to: "/admin/blog", icon: BookOpen, label: "Blog Posts" },
   { to: "/admin/testimonials", icon: MessageSquare, label: "Testimonials" },
   { to: "/admin/faqs", icon: HelpCircle, label: "FAQs" },
