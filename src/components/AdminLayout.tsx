@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, FileText, Plane, Globe, Package,
-  Image, BookOpen, MessageSquare, HelpCircle, Phone, Youtube,
+  Image, BookOpen, MessageSquare, HelpCircle, Phone, Youtube, Megaphone,
   LogOut, Menu, X, Settings
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/admin/content", icon: FileText, label: "Site Content" },
+  { to: "/admin/offers", icon: Megaphone, label: "Latest Offers" },
   { to: "/admin/services", icon: Settings, label: "Services" },
   { to: "/admin/visa", icon: Globe, label: "Visa Countries" },
   { to: "/admin/packages", icon: Package, label: "Packages" },
