@@ -161,14 +161,7 @@ function Index() {
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % Math.max(1, slidesLen));
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(nextSlide, 5000);
-    return () => clearInterval(timer);
-  }, [nextSlide]);
+  // (slide auto-rotate effect declared below, after heroSlides is computed)
 
   const openBooking = (pkg?: string, mode: "tour" | "visa" = "tour") => {
     setSelectedPkg(pkg || "");
