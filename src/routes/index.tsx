@@ -207,22 +207,22 @@ function Index() {
     window.open(`https://wa.me/${ci.whatsapp}?text=${text}`, "_blank");
   };
 
-  const slide = heroSlides[currentSlide];
+  const slide = heroSlides[currentSlide] || heroSlides[0] || fallbackHeroSlides[0];
 
   return (
     <>
       {/* ═══════ HERO SLIDER ═══════ */}
       <section id="home" className="relative min-h-[90vh] flex items-center overflow-hidden">
         {/* Background images with crossfade */}
-        {heroSlides.map((s, i) => (
+        {heroSlides.map((s: any, i: number) => (
           <div
             key={i}
             className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
             style={{ opacity: i === currentSlide ? 1 : 0 }}
           >
             <img
-              src={s.image}
-              alt={s.title1 + " " + s.title2}
+              src={s.image_url || s.image}
+              alt={(s.title_line1 || s.title1 || "") + " " + (s.title_line2 || s.title2 || "")}
               className="w-full h-full object-cover"
               width={1920}
               height={1080}
@@ -238,7 +238,8 @@ function Index() {
               {slide.badge}
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-heading text-primary-foreground leading-tight">
-              {slide.title1}<br /><span className="text-gradient-eco">{slide.title2}</span>
+              {(slide as any).title_line1 || (slide as any).title1}<br />
+              <span className="text-gradient-eco">{(slide as any).title_line2 || (slide as any).title2}</span>
             </h1>
             <p className="mt-6 text-lg text-primary-foreground/85 max-w-xl leading-relaxed">
               {slide.subtitle}
@@ -255,7 +256,7 @@ function Index() {
 
           {/* Slide indicators */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-            {heroSlides.map((_, i) => (
+            {heroSlides.map((_: any, i: number) => (
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
