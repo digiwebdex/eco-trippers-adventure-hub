@@ -5,6 +5,12 @@ import { zodValidator } from "@tanstack/zod-adapter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useSiteData } from "@/hooks/useSiteData";
 import { getFlagUrl } from "@/lib/countries";
 import { BookingModal } from "@/components/BookingModal";
