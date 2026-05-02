@@ -372,7 +372,16 @@ function Index() {
                       </div>
                     </div>
                     {pkg.deadline && <p className="text-xs text-muted-foreground mb-4">Booking deadline: {pkg.deadline}</p>}
-                    <Button onClick={() => { setDetailsPkg(pkg); setDetailsOpen(true); }} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">Book This Package</Button>
+                    <div className="flex flex-wrap gap-3">
+                      <Button asChild variant="outline" className="font-semibold border-primary/40 text-primary hover:bg-primary/5">
+                        <Link to="/package" search={{ id: pkg.id }}>
+                          View Full Details <ArrowRight className="h-4 w-4 ml-1" />
+                        </Link>
+                      </Button>
+                      <Button onClick={() => { setDetailsPkg(pkg); setDetailsOpen(true); }} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">
+                        Book This Package
+                      </Button>
+                    </div>
                   </CardContent>
                 </div>
               </Card>
