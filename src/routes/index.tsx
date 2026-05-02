@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { SectionHeading } from "@/components/SectionHeading";
 import { BookingModal } from "@/components/BookingModal";
+import { PackageDetailsModal } from "@/components/PackageDetailsModal";
 import { FlightMap } from "@/components/FlightMap";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -152,6 +153,8 @@ function Index() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("");
   const [bookingMode, setBookingMode] = useState<"tour" | "visa">("tour");
+  const [detailsPkg, setDetailsPkg] = useState<any | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [galleryFilter, setGalleryFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -369,7 +372,7 @@ function Index() {
                       </div>
                     </div>
                     {pkg.deadline && <p className="text-xs text-muted-foreground mb-4">Booking deadline: {pkg.deadline}</p>}
-                    <Button onClick={() => openBooking(pkg.name)} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">Book This Package</Button>
+                    <Button onClick={() => { setDetailsPkg(pkg); setDetailsOpen(true); }} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">Book This Package</Button>
                   </CardContent>
                 </div>
               </Card>
@@ -871,6 +874,12 @@ function Index() {
 
       {/* Modals */}
       <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} defaultPackage={selectedPkg} mode={bookingMode} />
+      <PackageDetailsModal
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        pkg={detailsPkg}
+        onBook={(name) => openBooking(name)}
+      />
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none">
           {selectedImage && <img src={selectedImage} alt="Gallery fullscreen" className="w-full h-auto rounded-xl" />}

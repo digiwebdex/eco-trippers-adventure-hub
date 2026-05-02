@@ -244,6 +244,8 @@ export type Database = {
       }
       packages: {
         Row: {
+          cancellation_policy: string | null
+          country: string | null
           created_at: string
           deadline: string | null
           departure: string | null
@@ -255,13 +257,17 @@ export type Database = {
           image_url: string | null
           includes: string[] | null
           is_active: boolean
+          itinerary: string[] | null
           name: string
+          overview: string | null
           price: string
           sort_order: number
           type: string
           updated_at: string
         }
         Insert: {
+          cancellation_policy?: string | null
+          country?: string | null
           created_at?: string
           deadline?: string | null
           departure?: string | null
@@ -273,13 +279,17 @@ export type Database = {
           image_url?: string | null
           includes?: string[] | null
           is_active?: boolean
+          itinerary?: string[] | null
           name: string
+          overview?: string | null
           price?: string
           sort_order?: number
           type?: string
           updated_at?: string
         }
         Update: {
+          cancellation_policy?: string | null
+          country?: string | null
           created_at?: string
           deadline?: string | null
           departure?: string | null
@@ -291,7 +301,9 @@ export type Database = {
           image_url?: string | null
           includes?: string[] | null
           is_active?: boolean
+          itinerary?: string[] | null
           name?: string
+          overview?: string | null
           price?: string
           sort_order?: number
           type?: string
