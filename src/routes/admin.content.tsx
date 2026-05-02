@@ -20,13 +20,38 @@ interface SectionData {
 const sections = [
   {
     key: "hero",
-    title: "Hero Section",
+    title: "Hero Section (legacy fallback — main slider lives in Hero Slider page)",
     fields: [
       { name: "badge", label: "Badge Text", type: "text" },
       { name: "title_line1", label: "Title Line 1", type: "text" },
       { name: "title_line2", label: "Title Line 2 (gradient)", type: "text" },
       { name: "subtitle", label: "Subtitle", type: "textarea" },
       { name: "image_url", label: "Background Image URL", type: "text" },
+    ],
+  },
+  {
+    key: "founders",
+    title: "Founders Photo (About Us section)",
+    fields: [
+      { name: "image_url", label: "Founders Photo URL", type: "text" },
+      { name: "caption", label: "Caption (alt text)", type: "text" },
+    ],
+  },
+  {
+    key: "about",
+    title: "About Us Section (paragraphs)",
+    fields: [
+      { name: "paragraph1", label: "Paragraph 1 (HTML allowed)", type: "textarea" },
+      { name: "paragraph2", label: "Paragraph 2", type: "textarea" },
+      { name: "paragraph3", label: "Paragraph 3", type: "textarea" },
+    ],
+  },
+  {
+    key: "mission",
+    title: "Mission & Vision",
+    fields: [
+      { name: "mission", label: "Mission Statement", type: "textarea" },
+      { name: "vision", label: "Vision Statement", type: "textarea" },
     ],
   },
   {
