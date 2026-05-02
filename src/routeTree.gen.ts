@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VisaRouteImport } from './routes/visa'
+import { Route as PackageRouteImport } from './routes/package'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -28,6 +29,11 @@ import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 const VisaRoute = VisaRouteImport.update({
   id: '/visa',
   path: '/visa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PackageRoute = PackageRouteImport.update({
+  id: '/package',
+  path: '/package',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -104,6 +110,7 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/package': typeof PackageRoute
   '/visa': typeof VisaRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/content': typeof AdminContentRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/package': typeof PackageRoute
   '/visa': typeof VisaRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/content': typeof AdminContentRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/package': typeof PackageRoute
   '/visa': typeof VisaRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/content': typeof AdminContentRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/package'
     | '/visa'
     | '/admin/blog'
     | '/admin/content'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/package'
     | '/visa'
     | '/admin/blog'
     | '/admin/content'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/package'
     | '/visa'
     | '/admin/blog'
     | '/admin/content'
@@ -208,6 +220,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  PackageRoute: typeof PackageRoute
   VisaRoute: typeof VisaRoute
 }
 
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       path: '/visa'
       fullPath: '/visa'
       preLoaderRoute: typeof VisaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/package': {
+      id: '/package'
+      path: '/package'
+      fullPath: '/package'
+      preLoaderRoute: typeof PackageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -356,6 +376,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  PackageRoute: PackageRoute,
   VisaRoute: VisaRoute,
 }
 export const routeTree = rootRouteImport
