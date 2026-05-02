@@ -271,16 +271,30 @@ function PackageDetailPage() {
 
             {activeTab === "itinerary" && (
               <div>
-                <h2 className="text-xl md:text-2xl font-heading font-bold mb-5 flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" /> Day-by-Day Itinerary
-                </h2>
                 {itinerary.length === 0 ? (
                   <p className="text-sm text-muted-foreground">
                     A detailed day-wise itinerary will be shared once you start the booking. Contact us for the complete plan.
                   </p>
                 ) : (
-                  <Accordion type="single" collapsible defaultValue="day-0" className="space-y-3">
-                    {itinerary.map((day, idx) => {
+                  <Accordion type="single" collapsible defaultValue="itinerary-root">
+                    <AccordionItem
+                      value="itinerary-root"
+                      className="border border-border/60 rounded-xl bg-card overflow-hidden data-[state=open]:shadow-eco data-[state=open]:border-primary/40 transition-all"
+                    >
+                      <AccordionTrigger className="px-4 md:px-5 py-4 hover:no-underline">
+                        <div className="flex items-center gap-3 text-left flex-1">
+                          <MapPin className="h-5 w-5 text-primary shrink-0" />
+                          <span className="text-lg md:text-xl font-heading font-bold">
+                            Itinerary
+                          </span>
+                          <span className="text-xs text-muted-foreground font-normal">
+                            ({itinerary.length} {itinerary.length === 1 ? "day" : "days"})
+                          </span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-3 md:px-4 pb-4 pt-0">
+                        <Accordion type="single" collapsible defaultValue="day-0" className="space-y-2">
+                          {itinerary.map((day, idx) => {
                       // Parse "Day 1: Title || Description" — `||` separates short title from full details
                       const headerMatch = day.match(/^(Day[\s-]*\d+)\s*[:\-]?\s*(.*)$/i);
                       const dayLabel = headerMatch ? headerMatch[1].replace(/\s+/g, " ").trim() : `Day ${idx + 1}`;
@@ -292,7 +306,7 @@ function PackageDetailPage() {
                         <AccordionItem
                           key={idx}
                           value={`day-${idx}`}
-                          className="border border-border/60 rounded-xl bg-card overflow-hidden data-[state=open]:shadow-eco data-[state=open]:border-primary/40 transition-all"
+                          className="border border-border/60 rounded-lg bg-background overflow-hidden data-[state=open]:border-primary/40 transition-all"
                         >
                           <AccordionTrigger className="px-4 md:px-5 py-4 hover:no-underline group">
                             <div className="flex items-center gap-4 text-left flex-1">
@@ -326,7 +340,10 @@ function PackageDetailPage() {
                           </AccordionContent>
                         </AccordionItem>
                       );
-                    })}
+                          })}
+                        </Accordion>
+                      </AccordionContent>
+                    </AccordionItem>
                   </Accordion>
                 )}
               </div>
