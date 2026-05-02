@@ -290,12 +290,9 @@ function Index() {
               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 leading-tight">
                 Two Travelers. <span className="text-gradient-eco">One Mission.</span>
               </h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Eco Trippers was founded by <strong className="text-foreground">Monabbir Ahammed Khan</strong> and <strong className="text-foreground">Bidarul Islam</strong> — two lifelong travelers from Bangladesh who believe every journey should be effortless, memorable, and within reach. From visa paperwork to airport boarding, we handle the details so you can focus on the experience.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Since 2019, we've helped <strong className="text-foreground">3,500+ travelers</strong> explore <strong className="text-foreground">21+ countries</strong> with hand-crafted tour packages, stress-free visa processing, and the best deals on flights and hotels. Headquartered in Banani, Dhaka, our team blends local expertise with global partnerships to give every customer a world-class travel experience.
-              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: site.about.paragraph1 }} />
+              <p className="text-muted-foreground leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: site.about.paragraph2 }} />
+              <p className="text-muted-foreground leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: site.about.paragraph3 }} />
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center p-4 rounded-xl bg-muted/50 border border-border/50">
                   <div className="text-2xl font-bold text-primary font-heading">3,500+</div>
