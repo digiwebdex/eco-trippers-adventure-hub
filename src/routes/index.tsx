@@ -187,6 +187,14 @@ function Index() {
   const visaSteps = site.visaSteps.length ? site.visaSteps : fallbackVisaSteps;
   const foundersImg = site.founders?.image_url || foundersImage;
 
+  useEffect(() => {
+    if (heroSlides.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
   const galleryCategories = ["All", "Visa Success", "Visa Travelers"];
   const allowedGallery = gallery.filter((i: any) => galleryCategories.includes(i.category));
   const filteredGallery = galleryFilter === "All" ? allowedGallery : allowedGallery.filter((i: any) => i.category === galleryFilter);
