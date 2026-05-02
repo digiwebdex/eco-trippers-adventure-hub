@@ -190,6 +190,9 @@ function Index() {
     { video_id: "dw7D5ZOsvOQ", title: "What Customer Says?" },
     { video_id: "Et6krgu0mOQ", title: "Sreemangal Tour, Bangladesh" },
   ];
+  const heroSlides = site.heroSlides.length ? site.heroSlides : fallbackHeroSlides;
+  const visaSteps = site.visaSteps.length ? site.visaSteps : fallbackVisaSteps;
+  const foundersImg = site.founders?.image_url || foundersImage;
 
   const galleryCategories = ["All", "Visa Success", "Visa Travelers"];
   const allowedGallery = gallery.filter((i: any) => galleryCategories.includes(i.category));
