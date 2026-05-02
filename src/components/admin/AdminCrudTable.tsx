@@ -6,14 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, GripVertical, X, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export interface FieldDef {
   name: string;
   label: string;
-  type: "text" | "textarea" | "number" | "switch" | "array" | "image" | "date" | "select";
+  type: "text" | "textarea" | "number" | "switch" | "array" | "image" | "date" | "select" | "itinerary";
   options?: string[];
   required?: boolean;
   placeholder?: string;
@@ -44,6 +44,7 @@ export function AdminCrudTable({ title, table, fields, data, loading, onRefresh,
       if (f.type === "switch") defaults[f.name] = true;
       else if (f.type === "number") defaults[f.name] = 0;
       else if (f.type === "array") defaults[f.name] = [];
+      else if (f.type === "itinerary") defaults[f.name] = [];
       else defaults[f.name] = "";
     });
     setFormData(defaults);
@@ -54,7 +55,13 @@ export function AdminCrudTable({ title, table, fields, data, loading, onRefresh,
 
   const openEdit = (item: any) => {
     const fd: Record<string, any> = {};
-    fields.forEach(f => { fd[f.name] = item[f.name] ?? ""; });
+    fields.forEach(f => {
+      if (f.type === "itinerary") {
+        fd[f.name] = Array.isArray(item[f.name]) ? item[f.name] : [];
+      } else {
+        fd[f.name] = item[f.name] ?? "";
+      }
+    });
     setFormData(fd);
     setEditItem(item);
     setIsNew(false);
@@ -70,6 +77,17 @@ export function AdminCrudTable({ title, table, fields, data, loading, onRefresh,
         if (f.type === "number") val = Number(val) || 0;
         if (f.type === "array" && typeof val === "string") {
           val = val.split("\n").map((s: string) => s.trim()).filter(Boolean);
+        }
+        if (f.type === "itinerary") {
+          const days = Array.isArray(val) ? val : [];
+          val = days
+            .map((d: any, i: number) => {
+              const title = (d?.title || "").trim();
+              const desc = (d?.description || "").trim();
+              if (!title && !desc) return "";
+              return `Day ${i + 1}: ${title} || ${desc}`;
+            })
+            .filter(Boolean);
         }
         payload[f.name] = val;
       });
@@ -142,6 +160,102 @@ export function AdminCrudTable({ title, table, fields, data, loading, onRefresh,
             {field.options?.map(o => <option key={o} value={o}>{o}</option>)}
           </select>
         );
+      case "itinerary": {
+        // Normalize: parse strings like "Day 1: Title || Description" into {title, description}
+        const rawDays: any[] = Array.isArray(val) ? val : [];
+        const days = rawDays.map((d: any) => {
+          if (typeof d === "string") {
+            const headerMatch = d.match(/^(?:Day[\s-]*\d+)\s*[:\-]?\s*(.*)$/i);
+            const rest = headerMatch ? headerMatch[1] : d;
+            const [titleRaw, ...descParts] = rest.split("||");
+            return { title: (titleRaw || "").trim(), description: descParts.join("||").trim() };
+          }
+          return { title: d?.title || "", description: d?.description || "" };
+        });
+        const updateDays = (next: { title: string; description: string }[]) =>
+          setFormData(p => ({ ...p, [field.name]: next }));
+        return (
+          <div className="space-y-3">
+            {days.length === 0 && (
+              <p className="text-xs text-muted-foreground">No days added yet. Click "Add Day" below.</p>
+            )}
+            {days.map((day, idx) => (
+              <div key={idx} className="border rounded-lg p-3 bg-muted/30 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-semibold text-primary">Day {idx + 1}</span>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      disabled={idx === 0}
+                      onClick={() => {
+                        const next = [...days];
+                        [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+                        updateDays(next);
+                      }}
+                    >
+                      <ArrowUp className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      disabled={idx === days.length - 1}
+                      onClick={() => {
+                        const next = [...days];
+                        [next[idx + 1], next[idx]] = [next[idx], next[idx + 1]];
+                        updateDays(next);
+                      }}
+                    >
+                      <ArrowDown className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      onClick={() => updateDays(days.filter((_, i) => i !== idx))}
+                    >
+                      <X className="h-3.5 w-3.5 text-destructive" />
+                    </Button>
+                  </div>
+                </div>
+                <Input
+                  placeholder="Day title (e.g. Arrival in Tokyo)"
+                  value={day.title}
+                  onChange={(e) => {
+                    const next = [...days];
+                    next[idx] = { ...next[idx], title: e.target.value };
+                    updateDays(next);
+                  }}
+                />
+                <Textarea
+                  placeholder="Detailed description shown when this day is expanded"
+                  rows={3}
+                  value={day.description}
+                  onChange={(e) => {
+                    const next = [...days];
+                    next[idx] = { ...next[idx], description: e.target.value };
+                    updateDays(next);
+                  }}
+                />
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="gap-1"
+              onClick={() => updateDays([...days, { title: "", description: "" }])}
+            >
+              <Plus className="h-3.5 w-3.5" /> Add Day
+            </Button>
+          </div>
+        );
+      }
       default:
         return <Input value={val || ""} onChange={(e) => setFormData(p => ({ ...p, [field.name]: e.target.value }))} placeholder={field.placeholder} />;
     }
