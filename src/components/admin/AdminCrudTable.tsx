@@ -44,6 +44,7 @@ export function AdminCrudTable({ title, table, fields, data, loading, onRefresh,
       if (f.type === "switch") defaults[f.name] = true;
       else if (f.type === "number") defaults[f.name] = 0;
       else if (f.type === "array") defaults[f.name] = [];
+      else if (f.type === "itinerary") defaults[f.name] = [];
       else defaults[f.name] = "";
     });
     setFormData(defaults);
