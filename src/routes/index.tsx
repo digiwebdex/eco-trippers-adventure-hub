@@ -275,7 +275,7 @@ function Index() {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-eco opacity-20 blur-2xl rounded-3xl" aria-hidden />
               <img
-                src={foundersImage}
+                src={foundersImg}
                 alt="Monabbir Ahammed Khan and Bidarul Islam — Co-founders of Eco Trippers"
                 loading="lazy"
                 width={1200}
@@ -437,11 +437,11 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Visa Services" subtitle="Expert visa processing for 21+ countries with high approval rates" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {visaSteps.map((step, i) => (
-              <div key={step.title} className="text-center relative">
+            {visaSteps.map((step: any, i: number) => (
+              <div key={step.title || i} className="text-center relative">
                 <div className="w-14 h-14 mx-auto rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-3 text-xl font-bold">{i + 1}</div>
                 <h3 className="font-heading font-semibold mb-1">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.desc}</p>
+                <p className="text-sm text-muted-foreground">{step.description || step.desc}</p>
               </div>
             ))}
           </div>
