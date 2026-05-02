@@ -276,7 +276,7 @@ function Index() {
               <div className="absolute -inset-4 bg-gradient-eco opacity-20 blur-2xl rounded-3xl" aria-hidden />
               <img
                 src={foundersImg}
-                alt="Monabbir Ahammed Khan and Bidarul Islam — Co-founders of Eco Trippers"
+                alt={site.founders?.caption || "Monabbir Ahammed Khan and Bidarul Islam — Co-founders of Eco Trippers"}
                 loading="lazy"
                 width={1200}
                 height={800}
