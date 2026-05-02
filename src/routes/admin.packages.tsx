@@ -19,7 +19,7 @@ const fields: FieldDef[] = [
   { name: "deadline", label: "Booking Deadline", type: "text" },
   { name: "group_size", label: "Group Size", type: "text" },
   { name: "overview", label: "Overview", type: "textarea", placeholder: "Detailed tour description shown in the Overview tab" },
-  { name: "itinerary", label: "Itinerary (one day per line, e.g. 'Day 1: Arrival in Tokyo')", type: "array" },
+  { name: "itinerary", label: "Itinerary — one day per line. Format: 'Day 1: Short Title || Full description shown when expanded'  (the '||' separates the title from the details)", type: "array" },
   { name: "includes", label: "Includes (one per line)", type: "array" },
   { name: "excludes", label: "Excludes (one per line)", type: "array" },
   { name: "cancellation_policy", label: "Cancellation Policy", type: "textarea", placeholder: "Refund / cancellation terms" },
