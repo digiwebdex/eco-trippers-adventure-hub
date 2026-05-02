@@ -115,35 +115,36 @@ const fallbackFaqs = [
   { question: "What payment methods do you accept?", answer: "We accept bank transfers, mobile banking (bKash, Nagad), and cash payments at our office." },
 ];
 
-const visaSteps = [
-  { icon: Search, title: "Consultation", desc: "Free consultation to understand your travel needs and visa requirements" },
-  { icon: FileText, title: "Documentation", desc: "We prepare your complete visa file with all required documents" },
-  { icon: Send, title: "Submission", desc: "Application submitted to the embassy with follow-up tracking" },
-  { icon: CheckCircle, title: "Approval", desc: "Visa approved and passport returned. You're ready to travel!" },
+const visaStepIconMap: Record<string, any> = { Search, FileText, Send, CheckCircle };
+const fallbackVisaSteps = [
+  { icon: "Search", title: "Consultation", description: "Free consultation to understand your travel needs and visa requirements" },
+  { icon: "FileText", title: "Documentation", description: "We prepare your complete visa file with all required documents" },
+  { icon: "Send", title: "Submission", description: "Application submitted to the embassy with follow-up tracking" },
+  { icon: "CheckCircle", title: "Approval", description: "Visa approved and passport returned. You're ready to travel!" },
 ];
 
 /* ── Component ── */
 
-const heroSlides = [
+const fallbackHeroSlides = [
   {
-    image: "/hero-1.jpg",
+    image_url: "/hero-1.jpg",
     badge: "🏝️ Tropical Paradise Awaits",
-    title1: "Escape to",
-    title2: "Paradise.",
+    title_line1: "Escape to",
+    title_line2: "Paradise.",
     subtitle: "Discover pristine beaches, luxury resorts, and unforgettable island getaways with Eco Trippers.",
   },
   {
-    image: "/hero-2.jpg",
+    image_url: "/hero-2.jpg",
     badge: "🌸 Explore the Land of the Rising Sun",
-    title1: "Discover",
-    title2: "Japan & Beyond.",
+    title_line1: "Discover",
+    title_line2: "Japan & Beyond.",
     subtitle: "Cherry blossoms, ancient temples, and breathtaking culture. Experience Asia's finest with expert-curated tours.",
   },
   {
-    image: "/hero-3.jpg",
+    image_url: "/hero-3.jpg",
     badge: "🇬🇧 European Adventures Await",
-    title1: "Explore",
-    title2: "Europe in Style.",
+    title_line1: "Explore",
+    title_line2: "Europe in Style.",
     subtitle: "From London's iconic landmarks to European capitals. Premium visa processing & luxury travel packages.",
   },
 ];
