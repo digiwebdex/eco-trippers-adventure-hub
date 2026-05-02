@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { SectionHeading } from "@/components/SectionHeading";
 import { BookingModal } from "@/components/BookingModal";
+import { PackageDetailsModal } from "@/components/PackageDetailsModal";
 import { FlightMap } from "@/components/FlightMap";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
