@@ -162,7 +162,7 @@ function Index() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % Math.max(1, slidesLen));
   }, []);
 
   useEffect(() => {
