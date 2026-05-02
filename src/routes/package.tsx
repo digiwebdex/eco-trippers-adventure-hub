@@ -50,6 +50,7 @@ function PackageDetailPage() {
   const { packages: dbPackages, loading } = useSiteData();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingPkg, setBookingPkg] = useState("");
+  const [activeTab, setActiveTab] = useState<"overview" | "itinerary" | "inclusion" | "exclusion" | "cancellation">("overview");
 
   const pkg = useMemo(
     () => (id ? dbPackages.find((p: any) => p.id === id) : undefined),
@@ -135,97 +136,136 @@ function PackageDetailPage() {
     setBookingOpen(true);
   };
 
+  const tabs = [
+    { key: "overview", label: "Overview", icon: Globe },
+    { key: "itinerary", label: "Itinerary", icon: MapPin },
+    { key: "inclusion", label: "Inclusion", icon: CheckCircle },
+    { key: "exclusion", label: "Exclusion", icon: XCircle },
+    { key: "cancellation", label: "Cancellation Policy", icon: AlertCircle },
+  ] as const;
+
   return (
     <div className="min-h-screen bg-background">
-      {/* ── HERO with image background + overlay ── */}
-      <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden">
-        <img
-          src={pkg.image_url || "/hero-banner.jpg"}
-          alt={pkg.name}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/30" />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 h-full flex flex-col justify-end pb-10 md:pb-14 text-white">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white mb-6 self-start">
-            <ArrowLeft className="h-4 w-4" /> Back to Home
-          </Link>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div className="min-w-0">
-              {pkg.type && (
-                <Badge className="bg-eco-gold text-eco-gold-foreground hover:bg-eco-gold mb-3 font-semibold">
-                  <Sparkles className="h-3 w-3 mr-1" /> {pkg.type}
-                </Badge>
-              )}
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight flex items-center gap-3 flex-wrap">
-                <img
-                  src={getFlagUrl(pkg.name, 160)}
-                  alt=""
-                  className="w-12 h-9 md:w-16 md:h-11 rounded-md object-cover shadow-xl ring-2 ring-white/40"
-                />
-                {pkg.name}
-              </h1>
-              <div className="flex flex-wrap gap-2.5 mt-5 text-sm">
-                {pkg.duration && (
-                  <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1.5 rounded-full">
-                    <Calendar className="h-3.5 w-3.5" /> {pkg.duration}
-                  </span>
+      <main className="mx-auto max-w-7xl px-4 py-8 md:py-12">
+        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-6">
+          <ArrowLeft className="h-4 w-4" /> Back to Home
+        </Link>
+
+        {/* ── HEADER CARD: Tour name + Country on left, Picture on right ── */}
+        <Card className="overflow-hidden border-border/60 shadow-eco mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Left side */}
+            <div className="p-6 md:p-8 flex flex-col justify-between bg-gradient-to-br from-primary/5 via-background to-eco-gold/5">
+              <div>
+                {pkg.type && (
+                  <Badge className="bg-eco-gold text-eco-gold-foreground hover:bg-eco-gold mb-3 font-semibold">
+                    <Sparkles className="h-3 w-3 mr-1" /> {pkg.type}
+                  </Badge>
                 )}
-                {pkg.group_size && (
-                  <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1.5 rounded-full">
-                    <Users className="h-3.5 w-3.5" /> {pkg.group_size}
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-heading font-bold leading-tight text-foreground">
+                  {pkg.name}
+                </h1>
+                <div className="flex items-center gap-2 mt-3 text-muted-foreground">
+                  <img
+                    src={getFlagUrl(pkg.name, 80)}
+                    alt=""
+                    className="w-7 h-5 rounded object-cover ring-1 ring-border"
+                  />
+                  <span className="text-base md:text-lg font-medium">
+                    {pkg.country || pkg.name}
                   </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-5 text-xs">
+                  {pkg.duration && (
+                    <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1.5 rounded-full font-medium">
+                      <Calendar className="h-3.5 w-3.5" /> {pkg.duration}
+                    </span>
+                  )}
+                  {pkg.group_size && (
+                    <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1.5 rounded-full font-medium">
+                      <Users className="h-3.5 w-3.5" /> {pkg.group_size}
+                    </span>
+                  )}
+                  {pkg.departure && (
+                    <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1.5 rounded-full font-medium">
+                      <Plane className="h-3.5 w-3.5" /> {pkg.departure}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-end justify-between gap-4 mt-6 pt-6 border-t border-border/60">
+                {pkg.price && (
+                  <div>
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground">Starting from</p>
+                    <p className="text-2xl md:text-3xl font-heading font-bold text-primary">৳{pkg.price}</p>
+                    <p className="text-xs text-muted-foreground">per person</p>
+                  </div>
                 )}
-                {pkg.departure && (
-                  <span className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1.5 rounded-full">
-                    <Plane className="h-3.5 w-3.5" /> Departure: {pkg.departure}
-                  </span>
-                )}
+                <Button
+                  onClick={openBooking}
+                  className="bg-gradient-eco text-primary-foreground font-semibold gap-2 shadow-eco hover:opacity-90"
+                >
+                  <Send className="h-4 w-4" /> Book Now
+                </Button>
               </div>
             </div>
-            {pkg.price && (
-              <div className="bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
-                <p className="text-xs uppercase tracking-wider text-white/70">Starting from</p>
-                <p className="text-3xl md:text-4xl font-heading font-bold">৳{pkg.price}</p>
-                <p className="text-xs text-white/80">per person</p>
-              </div>
-            )}
+
+            {/* Right side — Picture */}
+            <div className="relative min-h-[260px] md:min-h-[360px]">
+              <img
+                src={pkg.image_url || "/hero-banner.jpg"}
+                alt={pkg.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
           </div>
+        </Card>
+
+        {/* ── TABS NAV ── */}
+        <div className="flex flex-wrap gap-2 md:gap-3 mb-6 border-b border-border/60 pb-3">
+          {tabs.map((t) => {
+            const Icon = t.icon;
+            const active = activeTab === t.key;
+            return (
+              <button
+                key={t.key}
+                onClick={() => setActiveTab(t.key)}
+                className={`inline-flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-lg border text-sm font-semibold transition-all ${
+                  active
+                    ? "bg-gradient-eco text-primary-foreground border-transparent shadow-eco"
+                    : "bg-card text-foreground border-border hover:border-primary/40 hover:text-primary"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {t.label}
+              </button>
+            );
+          })}
         </div>
-      </section>
 
-      {/* ── MAIN GRID ── */}
-      <main className="mx-auto max-w-7xl px-4 py-10 md:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* LEFT — package info */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Quick facts */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <FactBox icon={Calendar} label="Duration" value={pkg.duration || "—"} />
-              <FactBox icon={Users} label="Group Size" value={pkg.group_size || "Flexible"} />
-              <FactBox icon={Plane} label="Departure" value={pkg.departure || "On request"} />
-              <FactBox icon={Award} label="Type" value={pkg.type || "Standard"} />
-            </div>
-
-            {/* Overview */}
-            <Card className="border-border/60">
-              <CardContent className="p-6 md:p-8">
-                <h2 className="text-2xl font-heading font-bold mb-3 flex items-center gap-2">
+        {/* ── TAB CONTENT ── */}
+        <Card className="border-border/60">
+          <CardContent className="p-6 md:p-8">
+            {activeTab === "overview" && (
+              <div>
+                <h2 className="text-xl md:text-2xl font-heading font-bold mb-4 flex items-center gap-2">
                   <Globe className="h-5 w-5 text-primary" /> Overview
                 </h2>
-                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{overview}</p>
+                <p className="text-foreground/85 leading-relaxed whitespace-pre-line">{overview}</p>
                 {pkg.deadline && (
                   <div className="mt-5 inline-flex items-center gap-2 bg-eco-gold/15 border border-eco-gold/30 rounded-lg px-3 py-2 text-sm">
                     <AlertCircle className="h-4 w-4 text-eco-gold-foreground" />
                     <span><span className="font-semibold">Booking Deadline:</span> {pkg.deadline}</span>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            )}
 
-            {/* Itinerary */}
-            <Card className="border-border/60">
-              <CardContent className="p-6 md:p-8">
-                <h2 className="text-2xl font-heading font-bold mb-5 flex items-center gap-2">
+            {activeTab === "itinerary" && (
+              <div>
+                <h2 className="text-xl md:text-2xl font-heading font-bold mb-5 flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-primary" /> Day-by-Day Itinerary
                 </h2>
                 {itinerary.length === 0 ? (
@@ -253,121 +293,75 @@ function PackageDetailPage() {
                     })}
                   </ol>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            )}
 
-            {/* Inclusions / Exclusions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-6">
-                  <h3 className="font-heading font-bold text-lg mb-4 flex items-center gap-2 text-primary">
-                    <CheckCircle className="h-5 w-5" /> Inclusions
-                  </h3>
-                  {includes.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No inclusions listed.</p>
-                  ) : (
-                    <ul className="space-y-2.5">
-                      {includes.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </CardContent>
-              </Card>
-              <Card className="border-destructive/20 bg-destructive/5">
-                <CardContent className="p-6">
-                  <h3 className="font-heading font-bold text-lg mb-4 flex items-center gap-2 text-destructive">
-                    <XCircle className="h-5 w-5" /> Exclusions
-                  </h3>
-                  {excludes.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No exclusions listed.</p>
-                  ) : (
-                    <ul className="space-y-2.5">
-                      {excludes.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <XCircle className="h-4 w-4 text-destructive/70 shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
+            {activeTab === "inclusion" && (
+              <div>
+                <h2 className="text-xl md:text-2xl font-heading font-bold mb-5 flex items-center gap-2 text-primary">
+                  <CheckCircle className="h-5 w-5" /> Inclusions
+                </h2>
+                {includes.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No inclusions listed.</p>
+                ) : (
+                  <ul className="space-y-3">
+                    {includes.map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-sm md:text-base">
+                        <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
 
-            {/* Cancellation Policy */}
-            <Card className="border-border/60">
-              <CardContent className="p-6 md:p-8">
-                <h2 className="text-xl font-heading font-bold mb-3 flex items-center gap-2">
+            {activeTab === "exclusion" && (
+              <div>
+                <h2 className="text-xl md:text-2xl font-heading font-bold mb-5 flex items-center gap-2 text-destructive">
+                  <XCircle className="h-5 w-5" /> Exclusions
+                </h2>
+                {excludes.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No exclusions listed.</p>
+                ) : (
+                  <ul className="space-y-3">
+                    {excludes.map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-sm md:text-base">
+                        <XCircle className="h-5 w-5 text-destructive/70 shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+
+            {activeTab === "cancellation" && (
+              <div>
+                <h2 className="text-xl md:text-2xl font-heading font-bold mb-4 flex items-center gap-2">
                   <AlertCircle className="h-5 w-5 text-primary" /> Cancellation Policy
                 </h2>
-                <p className="text-sm leading-relaxed whitespace-pre-line text-muted-foreground">{cancellation}</p>
-              </CardContent>
-            </Card>
+                <p className="text-sm md:text-base leading-relaxed whitespace-pre-line text-foreground/85">
+                  {cancellation}
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* ── Bottom CTA ── */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-xl bg-gradient-to-r from-primary/10 via-background to-eco-gold/10 border border-border/60">
+          <div>
+            <h3 className="font-heading font-bold text-lg">Ready to explore {pkg.name}?</h3>
+            <p className="text-sm text-muted-foreground">Free consultation • No upfront charge • Instant WhatsApp reply</p>
           </div>
-
-          {/* RIGHT — sticky booking card */}
-          <aside className="lg:col-span-1">
-            <div className="lg:sticky lg:top-24 space-y-5">
-              <Card className="border-border/60 shadow-eco overflow-hidden">
-                <div className="bg-gradient-eco text-primary-foreground p-5">
-                  <Badge className="bg-white/20 text-white hover:bg-white/30 mb-2">Book This Package</Badge>
-                  <h3 className="font-heading text-xl font-bold">{pkg.name}</h3>
-                  {pkg.price && (
-                    <p className="mt-2 text-sm opacity-90">
-                      Starting from <span className="text-2xl font-bold font-heading">৳{pkg.price}</span>
-                      <span className="text-xs opacity-80"> /person</span>
-                    </p>
-                  )}
-                </div>
-                <CardContent className="p-5 space-y-4">
-                  <div className="space-y-2.5 text-sm">
-                    {pkg.duration && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground flex items-center gap-2"><Calendar className="h-4 w-4" /> Duration</span>
-                        <span className="font-medium">{pkg.duration}</span>
-                      </div>
-                    )}
-                    {pkg.group_size && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground flex items-center gap-2"><Users className="h-4 w-4" /> Group</span>
-                        <span className="font-medium">{pkg.group_size}</span>
-                      </div>
-                    )}
-                    {pkg.departure && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground flex items-center gap-2"><Plane className="h-4 w-4" /> Departure</span>
-                        <span className="font-medium">{pkg.departure}</span>
-                      </div>
-                    )}
-                  </div>
-                  <Button
-                    onClick={openBooking}
-                    className="w-full bg-gradient-eco text-primary-foreground font-semibold gap-2 shadow-eco hover:opacity-90"
-                  >
-                    <Send className="h-4 w-4" /> Book Now via WhatsApp
-                  </Button>
-                  <p className="text-xs text-center text-muted-foreground">
-                    Free consultation • No upfront charge
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/60 bg-muted/30">
-                <CardContent className="p-5 text-sm space-y-2">
-                  <div className="flex items-center gap-2 font-semibold">
-                    <Hotel className="h-4 w-4 text-primary" /> Need a custom itinerary?
-                  </div>
-                  <p className="text-muted-foreground text-xs">
-                    We can tailor this package — extra days, premium hotels, private transfers and more.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </aside>
+          <Button
+            onClick={openBooking}
+            size="lg"
+            className="bg-gradient-eco text-primary-foreground font-semibold gap-2 shadow-eco hover:opacity-90"
+          >
+            <Send className="h-4 w-4" /> Book This Package
+          </Button>
         </div>
       </main>
 
