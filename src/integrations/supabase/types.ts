@@ -182,6 +182,45 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_slides: {
+        Row: {
+          badge: string
+          created_at: string
+          id: string
+          image_url: string
+          is_active: boolean
+          sort_order: number
+          subtitle: string
+          title_line1: string
+          title_line2: string
+          updated_at: string
+        }
+        Insert: {
+          badge?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string
+          title_line1?: string
+          title_line2?: string
+          updated_at?: string
+        }
+        Update: {
+          badge?: string
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string
+          title_line1?: string
+          title_line2?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       navigation_items: {
         Row: {
           created_at: string
@@ -488,6 +527,39 @@ export type Database = {
           updated_at?: string
           validity?: string | null
           visa_type?: string | null
+        }
+        Relationships: []
+      }
+      visa_steps: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          is_active: boolean
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
