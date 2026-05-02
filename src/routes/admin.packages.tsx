@@ -9,6 +9,7 @@ export const Route = createFileRoute("/admin/packages")({
 
 const fields: FieldDef[] = [
   { name: "name", label: "Package Name", type: "text", required: true },
+  { name: "country", label: "Country Name", type: "text", placeholder: "e.g. Japan" },
   { name: "flag", label: "Flag Emoji", type: "text", placeholder: "e.g. 🇯🇵🇰🇷" },
   { name: "price", label: "Price (BDT)", type: "text" },
   { name: "duration", label: "Duration", type: "text", placeholder: "e.g. 7N/8D" },
@@ -17,8 +18,11 @@ const fields: FieldDef[] = [
   { name: "departure", label: "Departure", type: "text" },
   { name: "deadline", label: "Booking Deadline", type: "text" },
   { name: "group_size", label: "Group Size", type: "text" },
+  { name: "overview", label: "Overview", type: "textarea", placeholder: "Detailed tour description shown in the Overview tab" },
+  { name: "itinerary", label: "Itinerary (one day per line, e.g. 'Day 1: Arrival in Tokyo')", type: "array" },
   { name: "includes", label: "Includes (one per line)", type: "array" },
   { name: "excludes", label: "Excludes (one per line)", type: "array" },
+  { name: "cancellation_policy", label: "Cancellation Policy", type: "textarea", placeholder: "Refund / cancellation terms" },
   { name: "sort_order", label: "Sort Order", type: "number" },
   { name: "is_active", label: "Active", type: "switch" },
 ];
