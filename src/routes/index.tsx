@@ -115,35 +115,36 @@ const fallbackFaqs = [
   { question: "What payment methods do you accept?", answer: "We accept bank transfers, mobile banking (bKash, Nagad), and cash payments at our office." },
 ];
 
-const visaSteps = [
-  { icon: Search, title: "Consultation", desc: "Free consultation to understand your travel needs and visa requirements" },
-  { icon: FileText, title: "Documentation", desc: "We prepare your complete visa file with all required documents" },
-  { icon: Send, title: "Submission", desc: "Application submitted to the embassy with follow-up tracking" },
-  { icon: CheckCircle, title: "Approval", desc: "Visa approved and passport returned. You're ready to travel!" },
+const visaStepIconMap: Record<string, any> = { Search, FileText, Send, CheckCircle };
+const fallbackVisaSteps = [
+  { icon: "Search", title: "Consultation", description: "Free consultation to understand your travel needs and visa requirements" },
+  { icon: "FileText", title: "Documentation", description: "We prepare your complete visa file with all required documents" },
+  { icon: "Send", title: "Submission", description: "Application submitted to the embassy with follow-up tracking" },
+  { icon: "CheckCircle", title: "Approval", description: "Visa approved and passport returned. You're ready to travel!" },
 ];
 
 /* ── Component ── */
 
-const heroSlides = [
+const fallbackHeroSlides = [
   {
-    image: "/hero-1.jpg",
+    image_url: "/hero-1.jpg",
     badge: "🏝️ Tropical Paradise Awaits",
-    title1: "Escape to",
-    title2: "Paradise.",
+    title_line1: "Escape to",
+    title_line2: "Paradise.",
     subtitle: "Discover pristine beaches, luxury resorts, and unforgettable island getaways with Eco Trippers.",
   },
   {
-    image: "/hero-2.jpg",
+    image_url: "/hero-2.jpg",
     badge: "🌸 Explore the Land of the Rising Sun",
-    title1: "Discover",
-    title2: "Japan & Beyond.",
+    title_line1: "Discover",
+    title_line2: "Japan & Beyond.",
     subtitle: "Cherry blossoms, ancient temples, and breathtaking culture. Experience Asia's finest with expert-curated tours.",
   },
   {
-    image: "/hero-3.jpg",
+    image_url: "/hero-3.jpg",
     badge: "🇬🇧 European Adventures Await",
-    title1: "Explore",
-    title2: "Europe in Style.",
+    title_line1: "Explore",
+    title_line2: "Europe in Style.",
     subtitle: "From London's iconic landmarks to European capitals. Premium visa processing & luxury travel packages.",
   },
 ];
@@ -160,14 +161,7 @@ function Index() {
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(nextSlide, 5000);
-    return () => clearInterval(timer);
-  }, [nextSlide]);
+  // (slide auto-rotate effect declared below, after heroSlides is computed)
 
   const openBooking = (pkg?: string, mode: "tour" | "visa" = "tour") => {
     setSelectedPkg(pkg || "");
@@ -189,6 +183,17 @@ function Index() {
     { video_id: "dw7D5ZOsvOQ", title: "What Customer Says?" },
     { video_id: "Et6krgu0mOQ", title: "Sreemangal Tour, Bangladesh" },
   ];
+  const heroSlides = site.heroSlides.length ? site.heroSlides : fallbackHeroSlides;
+  const visaSteps = site.visaSteps.length ? site.visaSteps : fallbackVisaSteps;
+  const foundersImg = site.founders?.image_url || foundersImage;
+
+  useEffect(() => {
+    if (heroSlides.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
 
   const galleryCategories = ["All", "Visa Success", "Visa Travelers"];
   const allowedGallery = gallery.filter((i: any) => galleryCategories.includes(i.category));
@@ -202,22 +207,22 @@ function Index() {
     window.open(`https://wa.me/${ci.whatsapp}?text=${text}`, "_blank");
   };
 
-  const slide = heroSlides[currentSlide];
+  const slide = heroSlides[currentSlide] || heroSlides[0] || fallbackHeroSlides[0];
 
   return (
     <>
       {/* ═══════ HERO SLIDER ═══════ */}
       <section id="home" className="relative min-h-[90vh] flex items-center overflow-hidden">
         {/* Background images with crossfade */}
-        {heroSlides.map((s, i) => (
+        {heroSlides.map((s: any, i: number) => (
           <div
             key={i}
             className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
             style={{ opacity: i === currentSlide ? 1 : 0 }}
           >
             <img
-              src={s.image}
-              alt={s.title1 + " " + s.title2}
+              src={s.image_url || s.image}
+              alt={(s.title_line1 || s.title1 || "") + " " + (s.title_line2 || s.title2 || "")}
               className="w-full h-full object-cover"
               width={1920}
               height={1080}
@@ -233,7 +238,8 @@ function Index() {
               {slide.badge}
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-heading text-primary-foreground leading-tight">
-              {slide.title1}<br /><span className="text-gradient-eco">{slide.title2}</span>
+              {(slide as any).title_line1 || (slide as any).title1}<br />
+              <span className="text-gradient-eco">{(slide as any).title_line2 || (slide as any).title2}</span>
             </h1>
             <p className="mt-6 text-lg text-primary-foreground/85 max-w-xl leading-relaxed">
               {slide.subtitle}
@@ -250,7 +256,7 @@ function Index() {
 
           {/* Slide indicators */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-            {heroSlides.map((_, i) => (
+            {heroSlides.map((_: any, i: number) => (
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
@@ -269,8 +275,8 @@ function Index() {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-eco opacity-20 blur-2xl rounded-3xl" aria-hidden />
               <img
-                src={foundersImage}
-                alt="Monabbir Ahammed Khan and Bidarul Islam — Co-founders of Eco Trippers"
+                src={foundersImg}
+                alt={site.founders?.caption || "Monabbir Ahammed Khan and Bidarul Islam — Co-founders of Eco Trippers"}
                 loading="lazy"
                 width={1200}
                 height={800}
@@ -284,12 +290,9 @@ function Index() {
               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 leading-tight">
                 Two Travelers. <span className="text-gradient-eco">One Mission.</span>
               </h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Eco Trippers was founded by <strong className="text-foreground">Monabbir Ahammed Khan</strong> and <strong className="text-foreground">Bidarul Islam</strong> — two lifelong travelers from Bangladesh who believe every journey should be effortless, memorable, and within reach. From visa paperwork to airport boarding, we handle the details so you can focus on the experience.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Since 2019, we've helped <strong className="text-foreground">3,500+ travelers</strong> explore <strong className="text-foreground">21+ countries</strong> with hand-crafted tour packages, stress-free visa processing, and the best deals on flights and hotels. Headquartered in Banani, Dhaka, our team blends local expertise with global partnerships to give every customer a world-class travel experience.
-              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: site.about.paragraph1 }} />
+              <p className="text-muted-foreground leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: site.about.paragraph2 }} />
+              <p className="text-muted-foreground leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: site.about.paragraph3 }} />
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center p-4 rounded-xl bg-muted/50 border border-border/50">
                   <div className="text-2xl font-bold text-primary font-heading">3,500+</div>
@@ -431,11 +434,11 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading title="Visa Services" subtitle="Expert visa processing for 21+ countries with high approval rates" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {visaSteps.map((step, i) => (
-              <div key={step.title} className="text-center relative">
+            {visaSteps.map((step: any, i: number) => (
+              <div key={step.title || i} className="text-center relative">
                 <div className="w-14 h-14 mx-auto rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-3 text-xl font-bold">{i + 1}</div>
                 <h3 className="font-heading font-semibold mb-1">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.desc}</p>
+                <p className="text-sm text-muted-foreground">{step.description || step.desc}</p>
               </div>
             ))}
           </div>
