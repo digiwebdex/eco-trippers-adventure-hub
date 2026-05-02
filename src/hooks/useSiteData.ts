@@ -69,6 +69,11 @@ const defaultCta = {
   subtitle: "Let us handle the details while you enjoy the adventure. Book your consultation today and travel stress-free!",
 };
 
+const defaultFounders = {
+  image_url: "/src/assets/founders.jpg",
+  caption: "Founders Monabbir Ahammed Khan & Bidarul Islam",
+};
+
 export interface SiteData {
   hero: typeof defaultHero;
   stats: typeof defaultStats;
@@ -78,6 +83,7 @@ export interface SiteData {
   air_ticketing: typeof defaultAirTicketing;
   contact_info: typeof defaultContactInfo;
   cta: typeof defaultCta;
+  founders: typeof defaultFounders;
   services: any[];
   visaCountries: any[];
   packages: any[];
@@ -86,6 +92,8 @@ export interface SiteData {
   testimonials: any[];
   faqs: any[];
   youtubeVideos: any[];
+  heroSlides: any[];
+  visaSteps: any[];
   loading: boolean;
 }
 
@@ -99,6 +107,8 @@ export function useSiteData(): SiteData {
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [youtubeVideos, setYoutubeVideos] = useState<any[]>([]);
+  const [heroSlides, setHeroSlides] = useState<any[]>([]);
+  const [visaSteps, setVisaSteps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -113,6 +123,8 @@ export function useSiteData(): SiteData {
         { data: testRows },
         { data: faqRows },
         { data: vidRows },
+        { data: heroRows },
+        { data: stepRows },
       ] = await Promise.all([
         supabase.from("site_content").select("*"),
         supabase.from("services").select("*").eq("is_active", true).order("sort_order"),
@@ -123,6 +135,8 @@ export function useSiteData(): SiteData {
         supabase.from("testimonials").select("*").eq("is_active", true).order("sort_order"),
         supabase.from("faqs").select("*").eq("is_active", true).order("sort_order"),
         supabase.from("youtube_videos").select("*").eq("is_active", true).order("sort_order"),
+        supabase.from("hero_slides").select("*").eq("is_active", true).order("sort_order"),
+        supabase.from("visa_steps").select("*").eq("is_active", true).order("sort_order"),
       ]);
 
       const mapped: Record<string, any> = {};
@@ -136,6 +150,8 @@ export function useSiteData(): SiteData {
       if (testRows?.length) setTestimonials(testRows);
       if (faqRows?.length) setFaqs(faqRows);
       if (vidRows?.length) setYoutubeVideos(vidRows);
+      if (heroRows?.length) setHeroSlides(heroRows);
+      if (stepRows?.length) setVisaSteps(stepRows);
       setLoading(false);
     };
     fetchAll();
@@ -150,6 +166,7 @@ export function useSiteData(): SiteData {
     air_ticketing: { ...defaultAirTicketing, ...(content.air_ticketing || {}) },
     contact_info: { ...defaultContactInfo, ...(content.contact_info || {}) },
     cta: { ...defaultCta, ...(content.cta || {}) },
+    founders: { ...defaultFounders, ...(content.founders || {}) },
     services,
     visaCountries,
     packages,
@@ -158,6 +175,8 @@ export function useSiteData(): SiteData {
     testimonials,
     faqs,
     youtubeVideos,
+    heroSlides,
+    visaSteps,
     loading,
   };
 }
