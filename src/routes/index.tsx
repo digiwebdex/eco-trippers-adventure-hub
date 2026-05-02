@@ -153,6 +153,8 @@ function Index() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedPkg, setSelectedPkg] = useState("");
   const [bookingMode, setBookingMode] = useState<"tour" | "visa">("tour");
+  const [detailsPkg, setDetailsPkg] = useState<any | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [galleryFilter, setGalleryFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -370,7 +372,7 @@ function Index() {
                       </div>
                     </div>
                     {pkg.deadline && <p className="text-xs text-muted-foreground mb-4">Booking deadline: {pkg.deadline}</p>}
-                    <Button onClick={() => openBooking(pkg.name)} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">Book This Package</Button>
+                    <Button onClick={() => { setDetailsPkg(pkg); setDetailsOpen(true); }} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">Book This Package</Button>
                   </CardContent>
                 </div>
               </Card>
