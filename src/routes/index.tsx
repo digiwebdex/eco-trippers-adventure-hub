@@ -378,8 +378,10 @@ function Index() {
                           View Full Details <ArrowRight className="h-4 w-4 ml-1" />
                         </Link>
                       </Button>
-                      <Button onClick={() => { setDetailsPkg(pkg); setDetailsOpen(true); }} className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">
-                        Book This Package
+                      <Button asChild className="bg-gradient-eco text-primary-foreground font-semibold shadow-eco hover:opacity-90">
+                        <Link to="/package" search={{ id: pkg.id }}>
+                          Book This Package
+                        </Link>
                       </Button>
                     </div>
                   </CardContent>
