@@ -874,6 +874,12 @@ function Index() {
 
       {/* Modals */}
       <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} defaultPackage={selectedPkg} mode={bookingMode} />
+      <PackageDetailsModal
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        pkg={detailsPkg}
+        onBook={(name) => openBooking(name)}
+      />
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none">
           {selectedImage && <img src={selectedImage} alt="Gallery fullscreen" className="w-full h-auto rounded-xl" />}
