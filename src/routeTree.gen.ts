@@ -14,6 +14,7 @@ import { Route as PackageRouteImport } from './routes/package'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminVisaStepsRouteImport } from './routes/admin.visa-steps'
 import { Route as AdminVisaRouteImport } from './routes/admin.visa'
 import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
@@ -21,6 +22,7 @@ import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPackagesRouteImport } from './routes/admin.packages'
 import { Route as AdminOffersRouteImport } from './routes/admin.offers'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminHeroSlidesRouteImport } from './routes/admin.hero-slides'
 import { Route as AdminGalleryRouteImport } from './routes/admin.gallery'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
@@ -49,6 +51,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminVisaStepsRoute = AdminVisaStepsRouteImport.update({
+  id: '/visa-steps',
+  path: '/visa-steps',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminVisaRoute = AdminVisaRouteImport.update({
@@ -86,6 +93,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminHeroSlidesRoute = AdminHeroSlidesRouteImport.update({
+  id: '/hero-slides',
+  path: '/hero-slides',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminGalleryRoute = AdminGalleryRouteImport.update({
   id: '/gallery',
   path: '/gallery',
@@ -116,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/admin/content': typeof AdminContentRoute
   '/admin/faqs': typeof AdminFaqsRoute
   '/admin/gallery': typeof AdminGalleryRoute
+  '/admin/hero-slides': typeof AdminHeroSlidesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/offers': typeof AdminOffersRoute
   '/admin/packages': typeof AdminPackagesRoute
@@ -123,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/admin/visa': typeof AdminVisaRoute
+  '/admin/visa-steps': typeof AdminVisaStepsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -133,6 +147,7 @@ export interface FileRoutesByTo {
   '/admin/content': typeof AdminContentRoute
   '/admin/faqs': typeof AdminFaqsRoute
   '/admin/gallery': typeof AdminGalleryRoute
+  '/admin/hero-slides': typeof AdminHeroSlidesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/offers': typeof AdminOffersRoute
   '/admin/packages': typeof AdminPackagesRoute
@@ -140,6 +155,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/admin/visa': typeof AdminVisaRoute
+  '/admin/visa-steps': typeof AdminVisaStepsRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -152,6 +168,7 @@ export interface FileRoutesById {
   '/admin/content': typeof AdminContentRoute
   '/admin/faqs': typeof AdminFaqsRoute
   '/admin/gallery': typeof AdminGalleryRoute
+  '/admin/hero-slides': typeof AdminHeroSlidesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/offers': typeof AdminOffersRoute
   '/admin/packages': typeof AdminPackagesRoute
@@ -159,6 +176,7 @@ export interface FileRoutesById {
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/videos': typeof AdminVideosRoute
   '/admin/visa': typeof AdminVisaRoute
+  '/admin/visa-steps': typeof AdminVisaStepsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -172,6 +190,7 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/faqs'
     | '/admin/gallery'
+    | '/admin/hero-slides'
     | '/admin/login'
     | '/admin/offers'
     | '/admin/packages'
@@ -179,6 +198,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/admin/visa'
+    | '/admin/visa-steps'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -189,6 +209,7 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/faqs'
     | '/admin/gallery'
+    | '/admin/hero-slides'
     | '/admin/login'
     | '/admin/offers'
     | '/admin/packages'
@@ -196,6 +217,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/admin/visa'
+    | '/admin/visa-steps'
     | '/admin'
   id:
     | '__root__'
@@ -207,6 +229,7 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/faqs'
     | '/admin/gallery'
+    | '/admin/hero-slides'
     | '/admin/login'
     | '/admin/offers'
     | '/admin/packages'
@@ -214,6 +237,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/videos'
     | '/admin/visa'
+    | '/admin/visa-steps'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -259,6 +283,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/visa-steps': {
+      id: '/admin/visa-steps'
+      path: '/visa-steps'
+      fullPath: '/admin/visa-steps'
+      preLoaderRoute: typeof AdminVisaStepsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/visa': {
@@ -310,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/hero-slides': {
+      id: '/admin/hero-slides'
+      path: '/hero-slides'
+      fullPath: '/admin/hero-slides'
+      preLoaderRoute: typeof AdminHeroSlidesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/gallery': {
       id: '/admin/gallery'
       path: '/gallery'
@@ -346,6 +384,7 @@ interface AdminRouteChildren {
   AdminContentRoute: typeof AdminContentRoute
   AdminFaqsRoute: typeof AdminFaqsRoute
   AdminGalleryRoute: typeof AdminGalleryRoute
+  AdminHeroSlidesRoute: typeof AdminHeroSlidesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOffersRoute: typeof AdminOffersRoute
   AdminPackagesRoute: typeof AdminPackagesRoute
@@ -353,6 +392,7 @@ interface AdminRouteChildren {
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminVideosRoute: typeof AdminVideosRoute
   AdminVisaRoute: typeof AdminVisaRoute
+  AdminVisaStepsRoute: typeof AdminVisaStepsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -361,6 +401,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminContentRoute: AdminContentRoute,
   AdminFaqsRoute: AdminFaqsRoute,
   AdminGalleryRoute: AdminGalleryRoute,
+  AdminHeroSlidesRoute: AdminHeroSlidesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminOffersRoute: AdminOffersRoute,
   AdminPackagesRoute: AdminPackagesRoute,
@@ -368,6 +409,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminVideosRoute: AdminVideosRoute,
   AdminVisaRoute: AdminVisaRoute,
+  AdminVisaStepsRoute: AdminVisaStepsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
