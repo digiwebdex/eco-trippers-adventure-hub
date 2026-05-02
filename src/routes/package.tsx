@@ -279,25 +279,55 @@ function PackageDetailPage() {
                     A detailed day-wise itinerary will be shared once you start the booking. Contact us for the complete plan.
                   </p>
                 ) : (
-                  <ol className="space-y-4">
+                  <Accordion type="single" collapsible defaultValue="day-0" className="space-y-3">
                     {itinerary.map((day, idx) => {
-                      const match = day.match(/^(Day[\s-]*\d+)\s*[:\-]?\s*(.*)$/i);
-                      const label = match ? match[1] : `Day ${idx + 1}`;
-                      const text = match ? match[2] : day;
+                      // Parse "Day 1: Title || Description" — `||` separates short title from full details
+                      const headerMatch = day.match(/^(Day[\s-]*\d+)\s*[:\-]?\s*(.*)$/i);
+                      const dayLabel = headerMatch ? headerMatch[1].replace(/\s+/g, " ").trim() : `Day ${idx + 1}`;
+                      const rest = headerMatch ? headerMatch[2] : day;
+                      const [titleRaw, ...descParts] = rest.split("||");
+                      const title = (titleRaw || "").trim();
+                      const description = descParts.join("||").trim();
                       return (
-                        <li key={idx} className="relative pl-12">
-                          <div className="absolute left-0 top-0 w-9 h-9 rounded-full bg-gradient-eco text-primary-foreground flex items-center justify-center font-bold text-sm shadow-eco">
-                            {idx + 1}
-                          </div>
-                          {idx < itinerary.length - 1 && (
-                            <div className="absolute left-[17px] top-9 bottom-[-1rem] w-px bg-border" />
-                          )}
-                          <h3 className="font-heading font-bold text-primary mb-1">{label}</h3>
-                          <p className="text-sm text-foreground/85 leading-relaxed">{text}</p>
-                        </li>
+                        <AccordionItem
+                          key={idx}
+                          value={`day-${idx}`}
+                          className="border border-border/60 rounded-xl bg-card overflow-hidden data-[state=open]:shadow-eco data-[state=open]:border-primary/40 transition-all"
+                        >
+                          <AccordionTrigger className="px-4 md:px-5 py-4 hover:no-underline group">
+                            <div className="flex items-center gap-4 text-left flex-1">
+                              <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-eco text-primary-foreground flex items-center justify-center font-bold text-sm shadow-eco">
+                                {idx + 1}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="text-xs uppercase tracking-wider text-primary font-semibold">
+                                  {dayLabel}
+                                </div>
+                                {title && (
+                                  <div className="font-heading font-bold text-foreground mt-0.5 truncate">
+                                    {title}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-4 md:px-5 pb-5 pt-0">
+                            <div className="pl-14">
+                              {description ? (
+                                <p className="text-sm md:text-base text-foreground/85 leading-relaxed whitespace-pre-line">
+                                  {description}
+                                </p>
+                              ) : (
+                                <p className="text-sm text-muted-foreground italic">
+                                  More details will be shared on booking.
+                                </p>
+                              )}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
                       );
                     })}
-                  </ol>
+                  </Accordion>
                 )}
               </div>
             )}
