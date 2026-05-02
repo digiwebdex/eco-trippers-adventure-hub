@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Calendar, Users, MapPin, Send } from "lucide-react";
+import { CheckCircle, XCircle, Calendar, Users, MapPin, Send, ExternalLink } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 interface PackageDetailsModalProps {
   open: boolean;
@@ -161,6 +162,14 @@ export function PackageDetailsModal({ open, onOpenChange, pkg, onBook }: Package
 
           <div className="mt-8 flex justify-end gap-3 border-t pt-4">
             <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+            {pkg.id && (
+              <Button asChild variant="secondary" className="gap-2">
+                <Link to="/package" search={{ id: pkg.id }} onClick={() => onOpenChange(false)}>
+                  <ExternalLink className="h-4 w-4" />
+                  View Full Details
+                </Link>
+              </Button>
+            )}
             <Button
               onClick={() => {
                 onOpenChange(false);
